@@ -41,8 +41,54 @@ const iconComponents = {
   traefik: SiTraefikproxy,
 };
 
-// Enhanced tech clusters with new technologies
-const techClusters = {
+// Simplified tech clusters for mobile (similar to desktop but fewer icons and simpler)
+const mobileTechClusters = {
+  topLeft: {
+    position: { top: "8%", left: "6%" },
+    icons: [
+      { icon: "react", color: "#61DAFB", size: 28, x: 0, y: 0, delay: 0.2 },
+      {
+        icon: "typescript",
+        color: "#3178C6",
+        size: 24,
+        x: 45,
+        y: 25,
+        delay: 0.4,
+      },
+    ],
+  },
+  topRight: {
+    position: { top: "12%", right: "8%" },
+    icons: [
+      { icon: "nextjs", color: "#FFFFFF", size: 26, x: 0, y: 0, delay: 0.6 },
+      { icon: "node", color: "#339933", size: 28, x: -30, y: 35, delay: 0.8 },
+    ],
+  },
+  bottomLeft: {
+    position: { bottom: "18%", left: "8%" },
+    icons: [
+      { icon: "docker", color: "#2496ED", size: 25, x: 0, y: 0, delay: 1.0 },
+      { icon: "git", color: "#F05032", size: 24, x: 45, y: -15, delay: 1.2 },
+    ],
+  },
+  bottomRight: {
+    position: { bottom: "15%", right: "8%" },
+    icons: [
+      { icon: "tailwind", color: "#06B6D4", size: 26, x: 0, y: 0, delay: 1.4 },
+      {
+        icon: "postgresql",
+        color: "#4169E1",
+        size: 27,
+        x: -35,
+        y: 25,
+        delay: 1.6,
+      },
+    ],
+  },
+};
+
+// Desktop tech clusters (original complex version)
+const desktopTechClusters = {
   frontend: {
     position: { top: "12%", left: "5%" },
     icons: [
@@ -55,14 +101,7 @@ const techClusters = {
         y: -15,
         delay: 0.4,
       },
-      {
-        icon: "nextjs",
-        color: "#FFFFFF",
-        size: 40,
-        x: -25,
-        y: 75,
-        delay: 0.6,
-      },
+      { icon: "nextjs", color: "#FFFFFF", size: 40, x: -25, y: 75, delay: 0.6 },
       {
         icon: "tailwind",
         color: "#06B6D4",
@@ -77,22 +116,8 @@ const techClusters = {
     position: { top: "15%", right: "5%" },
     icons: [
       { icon: "node", color: "#339933", size: 44, x: 0, y: 0, delay: 1.0 },
-      {
-        icon: "python",
-        color: "#3776AB",
-        size: 42,
-        x: -75,
-        y: 65,
-        delay: 1.2,
-      },
-      {
-        icon: "prisma",
-        color: "#2D3748",
-        size: 36,
-        x: 85,
-        y: 35,
-        delay: 1.4,
-      },
+      { icon: "python", color: "#3776AB", size: 42, x: -75, y: 65, delay: 1.2 },
+      { icon: "prisma", color: "#2D3748", size: 36, x: 85, y: 35, delay: 1.4 },
       {
         icon: "postgresql",
         color: "#4169E1",
@@ -107,14 +132,7 @@ const techClusters = {
     position: { bottom: "18%", left: "5%" },
     icons: [
       { icon: "git", color: "#F05032", size: 36, x: 0, y: 0, delay: 1.8 },
-      {
-        icon: "linear",
-        color: "#5E6AD2",
-        size: 34,
-        x: 75,
-        y: -20,
-        delay: 2.0,
-      },
+      { icon: "linear", color: "#5E6AD2", size: 34, x: 75, y: -20, delay: 2.0 },
       {
         icon: "cloudflare",
         color: "#F38020",
@@ -129,22 +147,8 @@ const techClusters = {
     position: { bottom: "15%", right: "5%" },
     icons: [
       { icon: "docker", color: "#2496ED", size: 40, x: 0, y: 0, delay: 2.4 },
-      {
-        icon: "linux",
-        color: "#FCC624",
-        size: 38,
-        x: 80,
-        y: -25,
-        delay: 2.6,
-      },
-      {
-        icon: "podman",
-        color: "#892CA0",
-        size: 36,
-        x: -30,
-        y: 70,
-        delay: 2.8,
-      },
+      { icon: "linux", color: "#FCC624", size: 38, x: 80, y: -25, delay: 2.6 },
+      { icon: "podman", color: "#892CA0", size: 36, x: -30, y: 70, delay: 2.8 },
       {
         icon: "traefik",
         color: "#24A1C1",
@@ -158,42 +162,50 @@ const techClusters = {
   deployment: {
     position: { bottom: "15%", right: "25%" },
     icons: [
-      {
-        icon: "railway",
-        color: "#FFFFFF",
-        size: 32,
-        x: 0,
-        y: 0,
-        delay: 3.2,
-      },
+      { icon: "railway", color: "#FFFFFF", size: 32, x: 0, y: 0, delay: 3.2 },
       { icon: "expo", color: "#FFFFFF", size: 34, x: 85, y: -25, delay: 3.4 },
-      {
-        icon: "cicd",
-        color: "#2088FF",
-        size: 36,
-        x: -40,
-        y: 60,
-        delay: 3.6,
-      },
+      { icon: "cicd", color: "#2088FF", size: 36, x: -40, y: 60, delay: 3.6 },
     ],
   },
 };
 
-// Enhanced Grid Background Component with fade-in
-const GridBackground = () => {
+// Simplified grid background
+const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
+  if (isMobile) {
+    // Much simpler grid for mobile
+    return (
+      <div
+        className={`absolute inset-0 transition-opacity duration-1000 ${
+          isVisible ? "opacity-8" : "opacity-0"
+        }`}
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(63, 63, 70, 0.4) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(63, 63, 70, 0.4) 1px, transparent 1px)
+            `,
+            backgroundSize: "80px 80px",
+          }}
+        />
+      </div>
+    );
+  }
+
+  // Original complex grid for desktop
   return (
     <div
       className={`absolute inset-0 transition-opacity duration-2000 ${
         isVisible ? "opacity-15" : "opacity-0"
       }`}
     >
-      {/* Major grid lines */}
       <div
         className="absolute inset-0"
         style={{
@@ -204,8 +216,6 @@ const GridBackground = () => {
           backgroundSize: "100px 100px",
         }}
       />
-
-      {/* Minor grid lines */}
       <div
         className="absolute inset-0"
         style={{
@@ -216,8 +226,6 @@ const GridBackground = () => {
           backgroundSize: "25px 25px",
         }}
       />
-
-      {/* Accent grid lines */}
       <div
         className="absolute inset-0"
         style={{
@@ -232,10 +240,11 @@ const GridBackground = () => {
   );
 };
 
-// Enhanced clustered tech icons with staggered animations
-const ClusteredTechIcons = () => {
+// Optimized tech icons component with subtle mobile animations
+const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [isVisible, setIsVisible] = useState(false);
+  const [floatOffset, setFloatOffset] = useState(0);
 
   useEffect(() => {
     const updateWindowSize = () => {
@@ -245,7 +254,6 @@ const ClusteredTechIcons = () => {
     updateWindowSize();
     window.addEventListener("resize", updateWindowSize);
 
-    // Trigger animation after a short delay
     const timer = setTimeout(() => setIsVisible(true), 500);
 
     return () => {
@@ -253,6 +261,17 @@ const ClusteredTechIcons = () => {
       clearTimeout(timer);
     };
   }, []);
+
+  // Add subtle floating animation for mobile
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const floatingInterval = setInterval(() => {
+      setFloatOffset(Date.now() * 0.001);
+    }, 100); // Slower update rate for mobile
+
+    return () => clearInterval(floatingInterval);
+  }, [isMobile]);
 
   const calculatePosition = (
     position: any,
@@ -265,15 +284,18 @@ const ClusteredTechIcons = () => {
     if (position.left) {
       left = (parseFloat(position.left) / 100) * windowWidth;
     } else if (position.right) {
-      left =
-        windowWidth - (parseFloat(position.right) / 100) * windowWidth - 200; // Offset for cluster width
+      const rightPercentage = parseFloat(position.right);
+      const clusterWidth = isMobile ? 100 : 200; // Smaller cluster width for mobile
+      left = windowWidth - (rightPercentage / 100) * windowWidth - clusterWidth;
     }
 
     if (position.top) {
       top = (parseFloat(position.top) / 100) * windowHeight;
     } else if (position.bottom) {
+      const bottomPercentage = parseFloat(position.bottom);
+      const clusterHeight = isMobile ? 80 : 150; // Smaller cluster height for mobile
       top =
-        windowHeight - (parseFloat(position.bottom) / 100) * windowHeight - 150; // Offset for cluster height
+        windowHeight - (bottomPercentage / 100) * windowHeight - clusterHeight;
     }
 
     return { left, top };
@@ -281,9 +303,12 @@ const ClusteredTechIcons = () => {
 
   if (windowSize.width === 0) return null;
 
+  // Use simpler clusters for mobile
+  const clusters = isMobile ? mobileTechClusters : desktopTechClusters;
+
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {Object.entries(techClusters).map(([clusterName, cluster]) => {
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {Object.entries(clusters).map(([clusterName, cluster]) => {
         const clusterPosition = calculatePosition(
           cluster.position,
           windowSize.width,
@@ -299,78 +324,73 @@ const ClusteredTechIcons = () => {
               top: clusterPosition.top,
             }}
           >
-            {/* Cluster background glow with fade-in */}
+            {/* Simplified background glow */}
             <div
-              className={`absolute inset-0 w-52 h-36 bg-gradient-to-br from-blue-500/8 to-purple-500/8 rounded-full blur-3xl -translate-x-12 -translate-y-8 transition-all duration-1000 ${
+              className={`absolute inset-0 ${
+                isMobile ? "w-24 h-20" : "w-40 h-32"
+              } bg-gradient-to-br from-blue-500/6 to-purple-500/6 rounded-full blur-2xl transition-all duration-1000 ${
                 isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75"
               }`}
             />
 
-            {/* Cluster icons with staggered fade-in */}
+            {/* Icons with simplified animations */}
             {cluster.icons.map((iconData, index) => {
               const IconComponent =
                 iconComponents[iconData.icon as keyof typeof iconComponents];
+
+              // Calculate subtle floating movement for mobile
+              const floatX = isMobile ? Math.sin(floatOffset + index) * 2 : 0;
+              const floatY = isMobile
+                ? Math.cos(floatOffset + index * 0.7) * 1.5
+                : 0;
+
               return (
                 <div
                   key={`${clusterName}-${iconData.icon}`}
-                  className={`absolute transition-all duration-700 ease-out group ${
+                  className={`absolute transition-all duration-700 ease-out ${
                     isVisible
-                      ? "opacity-75 translate-y-0 scale-100"
-                      : "opacity-0 translate-y-8 scale-75"
-                  } hover:opacity-100`}
+                      ? isMobile
+                        ? "opacity-40 translate-y-0 scale-100"
+                        : "opacity-60 translate-y-0 scale-100"
+                      : "opacity-0 translate-y-4 scale-75"
+                  } ${!isMobile ? "hover:opacity-100 hover:scale-110" : ""}`}
                   style={{
-                    left: iconData.x,
-                    top: iconData.y,
+                    left: iconData.x + floatX,
+                    top: iconData.y + floatY,
                     transitionDelay: `${iconData.delay}s`,
                   }}
                 >
                   <div
-                    className="p-3 rounded-full backdrop-blur-sm bg-zinc-900/50 border border-zinc-800/60 group-hover:border-zinc-700/80 group-hover:bg-zinc-800/60 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
+                    className={`${
+                      isMobile ? "p-1.5" : "p-2"
+                    } rounded-full backdrop-blur-sm ${
+                      isMobile
+                        ? "bg-zinc-900/20 border border-zinc-800/30"
+                        : "bg-zinc-900/30 border border-zinc-800/40"
+                    } transition-all duration-300 ${
+                      !isMobile
+                        ? "group-hover:border-zinc-700/80 group-hover:bg-zinc-800/60"
+                        : ""
+                    }`}
                     style={{
-                      boxShadow: `0 0 20px ${iconData.color}20, 0 0 40px ${iconData.color}10`,
+                      boxShadow: isMobile
+                        ? `0 0 8px ${iconData.color}08`
+                        : `0 0 15px ${iconData.color}15`,
                     }}
                   >
                     <IconComponent
                       size={iconData.size}
                       style={{
                         color: iconData.color,
-                        filter: `drop-shadow(0 0 8px ${iconData.color}40)`,
+                        filter: isMobile
+                          ? `drop-shadow(0 0 3px ${iconData.color}15)`
+                          : `drop-shadow(0 0 6px ${iconData.color}30)`,
                       }}
                     />
                   </div>
-
-                  {/* Individual icon glow on hover */}
-                  <div
-                    className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl"
-                    style={{
-                      background: `radial-gradient(circle, ${iconData.color}30 0%, transparent 70%)`,
-                    }}
-                  />
-
-                  {/* Floating animation */}
-                  <div
-                    className="absolute inset-0 animate-bounce"
-                    style={{
-                      animationDuration: `${3 + index}s`,
-                      animationDelay: `${iconData.delay}s`,
-                    }}
-                  />
                 </div>
               );
             })}
-
-            {/* Enhanced cluster label with fade-in */}
-            <div
-              className={`absolute -bottom-10 left-1/2 transform -translate-x-1/2 transition-all duration-1000 ${
-                isVisible
-                  ? "opacity-0 translate-y-0"
-                  : "opacity-0 translate-y-4"
-              } hover:opacity-70`}
-            >
-              <span className="text-xs text-zinc-400 uppercase tracking-widest font-medium bg-zinc-900/90 px-3 py-1.5 rounded-full backdrop-blur-sm border border-zinc-800/50">
-                {clusterName}
-              </span>
-            </div>
           </div>
         );
       })}
@@ -378,8 +398,8 @@ const ClusteredTechIcons = () => {
   );
 };
 
-// Enhanced floating geometry with better animations
-const FloatingGeometry = () => {
+// Enhanced floating geometry with better animations (desktop only)
+const FloatingGeometry = ({ isMobile }: { isMobile: boolean }) => {
   const [shapes, setShapes] = useState<
     Array<{
       id: number;
@@ -395,6 +415,8 @@ const FloatingGeometry = () => {
   >([]);
 
   useEffect(() => {
+    if (isMobile) return; // Disable on mobile
+
     const initialShapes = Array.from({ length: 8 }, (_, i) => ({
       id: i,
       x: Math.random() * window.innerWidth,
@@ -410,9 +432,11 @@ const FloatingGeometry = () => {
       floatOffset: Math.random() * Math.PI * 2,
     }));
     setShapes(initialShapes);
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
+    if (isMobile) return;
+
     const interval = setInterval(() => {
       setShapes((prev) =>
         prev.map((shape) => ({
@@ -425,14 +449,16 @@ const FloatingGeometry = () => {
     }, 50);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) return null;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {shapes.map((shape) => (
         <div
           key={shape.id}
-          className={`absolute blur-sm transition-all duration-1000 ease-out`}
+          className="absolute blur-sm transition-all duration-1000 ease-out"
           style={{
             left: shape.x,
             top: shape.y,
@@ -463,7 +489,7 @@ const FloatingGeometry = () => {
 };
 
 // Enhanced animated particles with better movement
-const AnimatedParticles = () => {
+const AnimatedParticles = ({ isMobile }: { isMobile: boolean }) => {
   const [particles, setParticles] = useState<
     Array<{
       id: number;
@@ -478,26 +504,28 @@ const AnimatedParticles = () => {
   >([]);
 
   useEffect(() => {
-    const initialParticles = Array.from({ length: 25 }, (_, i) => ({
+    const particleCount = isMobile ? 8 : 25; // Much fewer particles on mobile
+    const initialParticles = Array.from({ length: particleCount }, (_, i) => ({
       id: i,
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
+      vx: (Math.random() - 0.5) * (isMobile ? 0.1 : 0.3),
+      vy: (Math.random() - 0.5) * (isMobile ? 0.1 : 0.3),
       life: Math.random() * 1000,
       maxLife: 1500 + Math.random() * 2000,
-      size: Math.random() * 2 + 1,
+      size: Math.random() * (isMobile ? 1.5 : 2) + 1,
     }));
     setParticles(initialParticles);
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
+    const updateInterval = isMobile ? 32 : 16; // Slower updates on mobile
     const interval = setInterval(() => {
       setParticles((prev) =>
         prev.map((particle) => {
           let newX = particle.x + particle.vx;
           let newY = particle.y + particle.vy;
-          let newLife = particle.life + 16;
+          let newLife = particle.life + updateInterval;
 
           // Wrap around edges
           if (newX < 0) newX = window.innerWidth;
@@ -520,16 +548,17 @@ const AnimatedParticles = () => {
           };
         })
       );
-    }, 16);
+    }, updateInterval);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isMobile]);
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {particles.map((particle) => {
         const opacity =
-          Math.sin((particle.life / particle.maxLife) * Math.PI) * 0.4;
+          Math.sin((particle.life / particle.maxLife) * Math.PI) *
+          (isMobile ? 0.2 : 0.4);
         return (
           <div
             key={particle.id}
@@ -549,8 +578,8 @@ const AnimatedParticles = () => {
   );
 };
 
-// Enhanced typewriter effect with pause after "Hello, I'm Roan"
-const TypewriterText = () => {
+// Optimized typewriter effect
+const TypewriterText = ({ isMobile }: { isMobile: boolean }) => {
   const [displayedText, setDisplayedText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showCursor, setShowCursor] = useState(true);
@@ -561,21 +590,23 @@ const TypewriterText = () => {
   const fullText = firstPart + secondPart;
 
   useEffect(() => {
-    // Start typing after logo loads
+    const typingSpeed = isMobile ? 50 : 30; // Slightly slower on mobile
     const startDelay = setTimeout(() => {
       if (currentIndex < firstPart.length && !isPaused) {
         const timer = setTimeout(() => {
           setDisplayedText(fullText.slice(0, currentIndex + 1));
           setCurrentIndex(currentIndex + 1);
-        }, 30); // Fast typing speed
+        }, typingSpeed);
         return () => clearTimeout(timer);
       } else if (currentIndex === firstPart.length && !isPaused) {
-        // Pause for 2 seconds after first part
         setIsPaused(true);
-        const pauseTimer = setTimeout(() => {
-          setIsPaused(false);
-          setCurrentIndex(currentIndex + 1);
-        }, 2000);
+        const pauseTimer = setTimeout(
+          () => {
+            setIsPaused(false);
+            setCurrentIndex(currentIndex + 1);
+          },
+          isMobile ? 1500 : 2000
+        ); // Shorter pause on mobile
         return () => clearTimeout(pauseTimer);
       } else if (
         currentIndex > firstPart.length &&
@@ -584,16 +615,15 @@ const TypewriterText = () => {
         const timer = setTimeout(() => {
           setDisplayedText(fullText.slice(0, currentIndex + 1));
           setCurrentIndex(currentIndex + 1);
-        }, 30); // Fast typing speed
+        }, typingSpeed);
         return () => clearTimeout(timer);
       }
     }, 100);
 
     return () => clearTimeout(startDelay);
-  }, [currentIndex, fullText, firstPart.length, isPaused]);
+  }, [currentIndex, fullText, firstPart.length, isPaused, isMobile]);
 
   useEffect(() => {
-    // Cursor blinking effect
     const cursorTimer = setInterval(() => {
       setShowCursor((prev) => !prev);
     }, 530);
@@ -601,7 +631,11 @@ const TypewriterText = () => {
   }, []);
 
   return (
-    <h1 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight mb-6">
+    <h1
+      className={`${
+        isMobile ? "text-2xl sm:text-3xl" : "text-4xl md:text-6xl lg:text-7xl"
+      } font-light tracking-tight mb-6`}
+    >
       <span className="text-zinc-100">
         {displayedText}
         <span
@@ -616,77 +650,114 @@ const TypewriterText = () => {
   );
 };
 
-export default function LandingSection() {
+export default function LandingSection({
+  onViewProjects,
+}: {
+  onViewProjects?: () => void;
+}) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Detect mobile
+    const checkMobile = () => {
+      setIsMobile(
+        window.innerWidth < 768 ||
+          /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          )
+      );
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
     setIsLoaded(true);
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   return (
     <section className="relative h-screen w-full snap-start overflow-hidden bg-zinc-950">
-      {/* Base gradient background with fade-in */}
+      {/* Base gradient background */}
       <div
         className={`absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900/95 to-zinc-950 transition-opacity duration-1000 ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       />
 
-      {/* Enhanced grid background */}
-      <GridBackground />
+      {/* Grid background */}
+      <GridBackground isMobile={isMobile} />
 
-      {/* Clustered tech icons */}
-      <ClusteredTechIcons />
+      {/* Tech icons */}
+      <ClusteredTechIcons isMobile={isMobile} />
 
-      {/* Floating geometric shapes */}
-      <FloatingGeometry />
+      {/* Floating geometry (disabled on mobile) */}
+      <FloatingGeometry isMobile={isMobile} />
 
-      {/* Animated particles */}
-      <AnimatedParticles />
+      {/* Particles (reduced on mobile) */}
+      <AnimatedParticles isMobile={isMobile} />
 
-      {/* Enhanced ambient lighting with animation */}
+      {/* Simplified ambient lighting */}
       <div
         className={`absolute inset-0 transition-all duration-2000 ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-blue-500/4 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-purple-500/4 rounded-full blur-3xl" />
+        <div
+          className={`absolute top-1/3 left-1/3 ${
+            isMobile ? "w-64 h-64" : "w-96 h-96"
+          } bg-blue-500/3 rounded-full blur-3xl`}
+        />
+        <div
+          className={`absolute bottom-1/3 right-1/3 ${
+            isMobile ? "w-64 h-64" : "w-96 h-96"
+          } bg-purple-500/3 rounded-full blur-3xl`}
+        />
       </div>
 
-      {/* Main content with staggered animations */}
-      <div className="relative z-20 flex h-full items-center justify-center">
-        <div className="text-center px-8">
-          {/* Simplified logo with clean animations */}
+      {/* Main content */}
+      <div className="relative z-40 flex h-full items-center justify-center">
+        <div className={`text-center ${isMobile ? "px-6" : "px-8"}`}>
+          {/* Logo */}
           <div
-            className={`mb-10 flex justify-center transition-all duration-1000 ease-out ${
+            className={`${
+              isMobile ? "mb-6" : "mb-10"
+            } flex justify-center transition-all duration-1000 ease-out ${
               isLoaded
                 ? "opacity-100 scale-100 translate-y-0"
                 : "opacity-0 scale-75 translate-y-8"
             }`}
           >
             <div className="relative group">
-              {/* Simple background glow */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-xl" />
-
-              {/* Main logo with clean hover effects */}
+              {/* Stronger background for mobile to ensure visibility */}
+              <div
+                className={`absolute inset-0 bg-gradient-to-r from-blue-500/${
+                  isMobile ? "12" : "8"
+                } to-purple-500/${isMobile ? "12" : "8"} rounded-full blur-xl`}
+              />
               <Image
                 src="/logo.png"
                 alt="Roan Logo"
-                width={80}
-                height={80}
-                className="relative z-10 opacity-90 drop-shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_30px_rgba(59,130,246,0.3)]"
+                width={isMobile ? 50 : 80}
+                height={isMobile ? 50 : 80}
+                className={`relative z-10 opacity-95 drop-shadow-2xl transition-all duration-500 ${
+                  !isMobile
+                    ? "group-hover:scale-110 group-hover:drop-shadow-[0_0_30px_rgba(59,130,246,0.3)]"
+                    : ""
+                }`}
                 priority
               />
             </div>
           </div>
 
-          {/* Enhanced typewriter text effect with pause */}
-          <TypewriterText />
+          {/* Typewriter text */}
+          <TypewriterText isMobile={isMobile} />
 
-          {/* Subtitle with fade-in */}
+          {/* Subtitle */}
           <p
-            className={`text-lg md:text-xl text-zinc-400 mb-10 max-w-xl mx-auto leading-relaxed transition-all duration-700 ease-out ${
+            className={`${
+              isMobile ? "text-sm px-2 mb-6" : "text-lg md:text-xl mb-10"
+            } text-zinc-400 max-w-xl mx-auto leading-relaxed transition-all duration-700 ease-out ${
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: "1.5s" }}
@@ -694,31 +765,57 @@ export default function LandingSection() {
             Full-stack developer crafting exceptional digital experiences
           </p>
 
-          {/* Action buttons with staggered animation */}
+          {/* Action buttons */}
           <div
-            className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-700 ease-out ${
+            className={`flex flex-col ${
+              isMobile ? "gap-3" : "sm:flex-row gap-4"
+            } justify-center items-center transition-all duration-700 ease-out ${
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: "1.8s" }}
           >
-            <button className="px-6 py-3 bg-zinc-100 hover:bg-white text-zinc-900 rounded-md transition-all duration-300 font-medium hover:scale-105 hover:shadow-lg">
+            <button
+              onClick={onViewProjects}
+              className={`${
+                isMobile ? "w-full max-w-xs px-6 py-3 text-sm" : "px-6 py-3"
+              } bg-zinc-100 hover:bg-white text-zinc-900 rounded-md transition-all duration-300 font-medium ${
+                !isMobile ? "hover:scale-105 hover:shadow-lg" : ""
+              } cursor-pointer`}
+            >
               View Projects
             </button>
-            <button className="px-6 py-3 border border-zinc-600 hover:border-zinc-500 text-zinc-300 hover:text-zinc-200 rounded-md transition-all duration-300 hover:scale-105 hover:bg-zinc-800/50">
+            <button
+              onClick={() => (window.location.href = "mailto:hey@roan.dev")}
+              className={`${
+                isMobile ? "w-full max-w-xs px-6 py-3 text-sm" : "px-6 py-3"
+              } border border-zinc-600 hover:border-zinc-500 text-zinc-300 hover:text-zinc-200 rounded-md transition-all duration-300 ${
+                !isMobile
+                  ? "hover:scale-105 hover:bg-zinc-800/50"
+                  : "hover:bg-zinc-800/30"
+              } cursor-pointer`}
+            >
               Contact Me
             </button>
           </div>
         </div>
       </div>
 
-      {/* Enhanced corner accent gradients */}
+      {/* Corner accent gradients (simplified on mobile) */}
       <div
-        className={`absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-blue-500/15 to-transparent blur-3xl transition-all duration-2000 ${
+        className={`absolute top-0 left-0 ${
+          isMobile ? "w-48 h-48" : "w-64 h-64"
+        } bg-gradient-to-br from-blue-500/${
+          isMobile ? "8" : "15"
+        } to-transparent blur-3xl transition-all duration-2000 ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       />
       <div
-        className={`absolute bottom-0 right-0 w-64 h-64 bg-gradient-to-tl from-purple-500/15 to-transparent blur-3xl transition-all duration-2000 ${
+        className={`absolute bottom-0 right-0 ${
+          isMobile ? "w-48 h-48" : "w-64 h-64"
+        } bg-gradient-to-tl from-purple-500/${
+          isMobile ? "8" : "15"
+        } to-transparent blur-3xl transition-all duration-2000 ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       />

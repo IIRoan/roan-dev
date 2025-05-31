@@ -33,8 +33,7 @@ const timelineData: TimelineItem[] = [
     organization: "Rotterdam University of Applied Sciences",
     period: "2023 - Present",
     type: "education",
-    description:
-      "Studying modern software development practices and technologies.",
+    description: "Studying modern software development and technologies.",
     location: "Rotterdam, NL",
     current: true,
   },
@@ -53,24 +52,23 @@ const timelineData: TimelineItem[] = [
     period: "2021 - 2022",
     type: "work",
     description:
-      "Gained hands-on experience with DevOps practices and cloud technologies.",
+      "Gained hands-on experience with DevOps practices and development.",
     location: "Netherlands",
   },
   {
     title: "Part-time Employee",
     organization: "Albert Heijn",
-    period: "2018 - Present",
+    period: "2018 - 2024",
     type: "work",
-    description: "Customer service and retail operations.",
+    description: "Retail operations.",
     location: "Netherlands",
-    current: true,
   },
   {
     title: "Mavo VMBO-TL",
     organization: "Melanchthon de Blesewic",
     period: "2014 - 2018",
     type: "education",
-    description: "Foundation education with focus on technology.",
+    description: "Middleschool education.",
     location: "Netherlands",
   },
 ];
@@ -453,24 +451,6 @@ export default function EducationSection({ isMobile }: EducationSectionProps) {
         ) : (
           <DesktopTimeline items={timelineData} isVisible={itemsVisible} />
         )}
-
-        {/* Footer */}
-        <div
-          className={`text-center mt-16 md:mt-20 transition-all duration-1000 ${
-            itemsVisible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8"
-          }`}
-        >
-          <div className="flex items-center justify-center space-x-4">
-            <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500" />
-            <div className="h-px w-24 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
-            <div className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-          </div>
-          <p className="text-zinc-500 text-sm mt-4 italic">
-            The journey continues...
-          </p>
-        </div>
       </div>
     </section>
   );

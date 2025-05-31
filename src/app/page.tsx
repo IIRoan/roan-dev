@@ -288,7 +288,7 @@ export default function Home() {
           data-section="0"
           style={{ opacity: currentSection === 0 ? 1 : 0.8 }}
         >
-          <LandingSection />
+          <LandingSection onViewProjects={() => scrollToSection(3)} />
         </div>
 
         {/* Section 2: Technologies */}
