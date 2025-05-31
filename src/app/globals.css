@@ -5,13 +5,6 @@
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -23,4 +16,181 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom Scrollbar Styles */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #18181b; /* zinc-900 */
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #3f3f46; /* zinc-700 */
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #52525b; /* zinc-600 */
+}
+
+/* Hide scrollbar for mobile */
+@media (max-width: 768px) {
+  .scrollbar-thin {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Enhanced smooth scroll behavior */
+html {
+  scroll-behavior: auto; /* Disabled for custom smooth scrolling */
+}
+
+* {
+  scroll-behavior: auto; /* Disabled for custom smooth scrolling */
+}
+
+/* Prevent horizontal scroll */
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* Enhanced scroll animation for scroll indicator */
+@keyframes scroll {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-scroll {
+  animation: scroll 1.5s ease-in-out infinite;
+}
+
+/* Section transition animations */
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sectionFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0.8;
+    transform: translateY(-10px);
+  }
+}
+
+.section-enter {
+  animation: sectionFadeIn 0.6s ease-out;
+}
+
+.section-exit {
+  animation: sectionFadeOut 0.4s ease-in;
+}
+
+/* Enhanced progress bar animation */
+@keyframes progressBar {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0.8;
+  }
+}
+
+.progress-animation {
+  animation: progressBar 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left;
+}
+
+/* Smooth section transitions */
+.section-transition {
+  transition: transform 1200ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Enhanced blur effect during transitions */
+.transition-blur {
+  transition: filter 0.3s ease-in-out;
+}
+
+/* Smooth section scaling with enhanced easing */
+.section-scale {
+  transition: transform 1200ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    filter 600ms ease-out;
+}
+
+.section-scale.scrolling {
+  transform: scale(0.98);
+  filter: blur(1px);
+}
+
+/* Custom smooth scroll container */
+.smooth-scroll-container {
+  scroll-behavior: auto;
+  overflow-y: hidden;
+  height: 100vh;
+}
+
+/* Progress ring animation */
+@keyframes progressRing {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+  100% {
+    stroke-dasharray: 100 0;
+  }
+}
+
+.progress-ring {
+  animation: progressRing 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced navigation dots */
+.nav-dot {
+  transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.nav-dot.active {
+  transform: scale(1.25);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+/* Smooth opacity transitions for sections */
+.section-fade {
+  transition: opacity 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
