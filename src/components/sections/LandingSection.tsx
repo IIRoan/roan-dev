@@ -762,7 +762,7 @@ export default function LandingSection({
             }`}
             style={{ transitionDelay: "1.5s" }}
           >
-            Full-stack developer crafting exceptional digital experiences
+            Full-stack developer creating fun stuff
           </p>
 
           {/* Action buttons */}

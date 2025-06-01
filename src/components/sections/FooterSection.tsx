@@ -67,7 +67,7 @@ export default function FooterSection() {
               <p className="text-sm text-zinc-500 max-w-sm mx-auto md:mx-0">
                 Reach out for collaborations or just to say hello!
               </p>
-              <div className="flex justify-center md:justify-start space-x-4 pt-2">
+              <div className="flex justify-center md:justify-start space-x-6 pt-2">
                 {socialLinks.map((social) => (
                   <a
                     key={social.label}
@@ -75,12 +75,15 @@ export default function FooterSection() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`
+                      relative z-10 p-3 min-w-[44px] min-h-[44px] 
+                      flex items-center justify-center
                       text-zinc-600 transition-all duration-200
-                      ${social.color} hover:scale-110
+                      ${social.color} hover:scale-110 active:scale-95
+                      rounded-lg hover:bg-zinc-800/30
                     `}
                     aria-label={social.label}
                   >
-                    <social.icon size={18} className="md:w-5 md:h-5" />
+                    <social.icon size={20} className="w-5 h-5" />
                   </a>
                 ))}
               </div>
