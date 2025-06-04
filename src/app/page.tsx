@@ -9,99 +9,77 @@ import ProjectsSection from "@/components/sections/ProjectsSection";
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSection, setCurrentSection] = useState(0);
-  const [isScrolling, setIsScrolling] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const hasInitialized = useRef(false);
+  const lastScrollTime = useRef(0);
+  const animationRef = useRef<number | null>(null);
 
-  const sections = 4; // Landing, Technologies, Education, Projects+Footer
-  const SWIPE_THRESHOLD = 50;
-  const SWIPE_TIME_THRESHOLD = 500;
+  const SECTIONS_COUNT = 4;
+  const SCROLL_COOLDOWN = 800; // ms
+  const SWIPE_THRESHOLD = 80;
+  const SWIPE_TIME_LIMIT = 600;
 
-  // Force scroll to top on page load/reload
+  // Initialize page position
   useEffect(() => {
-    if (hasInitialized.current) return;
-
-    const initializeScroll = () => {
-      const container = containerRef.current;
-      if (container) {
-        // Immediately scroll to top without animation
-        container.scrollTo({ top: 0 });
-        setCurrentSection(0);
-        hasInitialized.current = true;
-      }
-
-      // Also ensure window is at top
-      window.scrollTo({ top: 0 });
-    };
-
-    // Try immediately
-    initializeScroll();
-
-    // Also try after a short delay in case the ref isn't ready
-    const timeoutId = setTimeout(initializeScroll, 10);
-
-    return () => clearTimeout(timeoutId);
+    const container = containerRef.current;
+    if (container) {
+      container.style.transform = `translateY(0%)`;
+      setCurrentSection(0);
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
+  // Detect mobile devices
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(
-        window.innerWidth < 768 ||
-          /Android|iPhone|iPad|IEMobile|Opera Mini/i.test(navigator.userAgent)
-      );
+      setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
     };
-
+    
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const easeInOutCubic = (t: number): number => {
-    return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+  // Clean section transition function
+  const transitionToSection = useCallback((targetIndex: number) => {
+    const container = containerRef.current;
+    if (!container || isTransitioning) return;
+
+    const clampedIndex = Math.max(0, Math.min(targetIndex, SECTIONS_COUNT - 1));
+    if (clampedIndex === currentSection) return;
+
+    // Prevent rapid scrolling
+    const now = Date.now();
+    if (now - lastScrollTime.current < SCROLL_COOLDOWN) return;
+    lastScrollTime.current = now;
+
+    setIsTransitioning(true);
+    setCurrentSection(clampedIndex);
+
+    // Simple transform-based transition
+    const translateY = -(clampedIndex * 100);
+    container.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    container.style.transform = `translateY(${translateY}vh)`;
+
+    // Reset transition state
+    const cleanup = () => {
+      setIsTransitioning(false);
+      container.style.transition = '';
+    };
+
+    setTimeout(cleanup, 800);
+  }, [currentSection, isTransitioning]);
+
+  // Navigate to specific section
+  const goToSection = useCallback((index: number) => {
+    transitionToSection(index);
+  }, [transitionToSection]);
+
+  // Helper functions for scrollable sections
+  const getSectionElement = (index: number) => {
+    return sectionRefs.current[index];
   };
-
-  const scrollToSection = useCallback(
-    (sectionIndex: number) => {
-      const container = containerRef.current;
-      if (!container || isScrolling) return;
-
-      const targetIndex = Math.max(0, Math.min(sectionIndex, sections - 1));
-      if (targetIndex === currentSection) return;
-
-      setIsScrolling(true);
-
-      const startY = container.scrollTop;
-      const targetY = targetIndex * window.innerHeight;
-      const distance = targetY - startY;
-      const duration = 1200;
-      const startTime = performance.now();
-
-      const animate = (currentTime: number) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easedProgress = easeInOutCubic(progress);
-
-        setScrollProgress(easedProgress);
-
-        const currentY = startY + distance * easedProgress;
-        container.scrollTo({ top: currentY });
-
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          setCurrentSection(targetIndex);
-          setIsScrolling(false);
-          setScrollProgress(0);
-        }
-      };
-
-      requestAnimationFrame(animate);
-    },
-    [currentSection, isScrolling, sections]
-  );
 
   const isSectionScrollable = (sectionElement: HTMLElement | null) => {
     if (!sectionElement) return false;
@@ -109,12 +87,10 @@ export default function Home() {
   };
 
   const isAtBottomOfSection = (sectionElement: HTMLElement | null) => {
-    if (!sectionElement) return false;
+    if (!sectionElement) return true;
     const threshold = 5;
-    return (
-      sectionElement.scrollTop + sectionElement.clientHeight >=
-      sectionElement.scrollHeight - threshold
-    );
+    return sectionElement.scrollTop + sectionElement.clientHeight >= 
+           sectionElement.scrollHeight - threshold;
   };
 
   const isAtTopOfSection = (sectionElement: HTMLElement | null) => {
@@ -122,57 +98,45 @@ export default function Home() {
     return sectionElement.scrollTop <= 5;
   };
 
+  // Check if we can transition based on current section scroll position
+  const canTransitionFromSection = (direction: number) => {
+    const currentSectionElement = getSectionElement(currentSection);
+    const isScrollable = isSectionScrollable(currentSectionElement);
+    
+    // Non-scrollable sections (Landing, Technologies) - always allow transition
+    if (!isScrollable) return true;
+    
+    // Scrollable sections (Education, Projects) - check boundaries
+    if (direction > 0) {
+      // Scrolling down - check if at bottom
+      return isAtBottomOfSection(currentSectionElement);
+    } else {
+      // Scrolling up - check if at top
+      return isAtTopOfSection(currentSectionElement);
+    }
+  };
+
+  // Wheel event handler
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      if (isMobile || isScrolling) return;
-
-      const currentSectionElement = sectionRefs.current[currentSection];
-      const isScrollable = isSectionScrollable(currentSectionElement);
-
-      if (isScrollable && currentSectionElement) {
-        const scrollingDown = e.deltaY > 0;
-        const atBottom = isAtBottomOfSection(currentSectionElement);
-        const atTop = isAtTopOfSection(currentSectionElement);
-
-        if ((scrollingDown && !atBottom) || (!scrollingDown && !atTop)) {
-          return;
-        }
-
+      if (isMobile || isTransitioning) return;
+      
+      const direction = e.deltaY > 0 ? 1 : -1;
+      
+      // Check if we can transition from current section
+      if (canTransitionFromSection(direction)) {
         e.preventDefault();
-
-        if (scrollTimeoutRef.current) {
-          clearTimeout(scrollTimeoutRef.current);
-        }
-
-        scrollTimeoutRef.current = setTimeout(() => {
-          const delta = Math.sign(e.deltaY);
-          const targetSection = currentSection + delta;
-          scrollToSection(targetSection);
-        }, 100);
-      } else {
-        e.preventDefault();
-
-        if (scrollTimeoutRef.current) {
-          clearTimeout(scrollTimeoutRef.current);
-        }
-
-        scrollTimeoutRef.current = setTimeout(() => {
-          const delta = Math.sign(e.deltaY);
-          const targetSection = currentSection + delta;
-          scrollToSection(targetSection);
-        }, 100);
+        const targetSection = currentSection + direction;
+        transitionToSection(targetSection);
       }
+      // If we can't transition, allow normal scrolling within the section
     };
 
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, [currentSection, isScrolling, isMobile, scrollToSection]);
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, [currentSection, isTransitioning, isMobile, transitionToSection, canTransitionFromSection]);
 
+  // Touch event handler for mobile
   useEffect(() => {
     if (!isMobile) return;
 
@@ -185,75 +149,72 @@ export default function Home() {
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
-      if (isScrolling) return;
+      if (isTransitioning) return;
 
       const touchEndY = e.changedTouches[0].clientY;
       const touchTime = Date.now() - touchStartTime;
       const deltaY = touchStartY - touchEndY;
-      const absDeltaY = Math.abs(deltaY);
-
-      const currentSectionElement = sectionRefs.current[currentSection];
-      const isScrollable = isSectionScrollable(currentSectionElement);
-
-      if (absDeltaY > SWIPE_THRESHOLD && touchTime < SWIPE_TIME_THRESHOLD) {
-        const swipingDown = deltaY > 0;
-
-        if (isScrollable && currentSectionElement) {
-          const atBottom = isAtBottomOfSection(currentSectionElement);
-          const atTop = isAtTopOfSection(currentSectionElement);
-
-          if ((swipingDown && atBottom) || (!swipingDown && atTop)) {
-            const direction = swipingDown ? 1 : -1;
-            const targetSection = currentSection + direction;
-            scrollToSection(targetSection);
-          }
-        } else {
-          const direction = deltaY > 0 ? 1 : -1;
+      
+      if (Math.abs(deltaY) > SWIPE_THRESHOLD && touchTime < SWIPE_TIME_LIMIT) {
+        const direction = deltaY > 0 ? 1 : -1;
+        
+        // Check if we can transition from current section
+        if (canTransitionFromSection(direction)) {
           const targetSection = currentSection + direction;
-          scrollToSection(targetSection);
+          transitionToSection(targetSection);
         }
       }
     };
 
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchend", handleTouchEnd, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [currentSection, isScrolling, isMobile, scrollToSection]);
+  }, [currentSection, isTransitioning, isMobile, transitionToSection, canTransitionFromSection]);
 
+  // Keyboard navigation
   useEffect(() => {
-    const updateCurrentSection = () => {
-      if (isScrolling) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isTransitioning) return;
 
-      const container = containerRef.current;
-      if (!container) return;
-
-      const scrollTop = container.scrollTop;
-      const sectionHeight = window.innerHeight;
-      const newSection = Math.round(scrollTop / sectionHeight);
-
-      if (
-        newSection !== currentSection &&
-        newSection >= 0 &&
-        newSection < sections
-      ) {
-        setCurrentSection(newSection);
+      switch (e.key) {
+        case 'ArrowDown':
+        case 'PageDown':
+        case ' ':
+          e.preventDefault();
+          transitionToSection(currentSection + 1);
+          break;
+        case 'ArrowUp':
+        case 'PageUp':
+          e.preventDefault();
+          transitionToSection(currentSection - 1);
+          break;
+        case 'Home':
+          e.preventDefault();
+          transitionToSection(0);
+          break;
+        case 'End':
+          e.preventDefault();
+          transitionToSection(SECTIONS_COUNT - 1);
+          break;
+        default:
+          const num = parseInt(e.key);
+          if (num >= 1 && num <= SECTIONS_COUNT) {
+            e.preventDefault();
+            transitionToSection(num - 1);
+          }
+          break;
       }
     };
 
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("scroll", updateCurrentSection, {
-        passive: true,
-      });
-      return () =>
-        container.removeEventListener("scroll", updateCurrentSection);
-    }
-  }, [currentSection, isScrolling, sections]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentSection, isTransitioning, transitionToSection]);
 
+  // Assign section refs
   const assignSectionRef = (index: number) => (el: HTMLDivElement | null) => {
     sectionRefs.current[index] = el;
   };
@@ -262,63 +223,61 @@ export default function Home() {
     <>
       {/* Navigation dots */}
       <div className="fixed right-4 md:right-8 top-1/2 transform -translate-y-1/2 z-50 flex flex-col space-y-4">
-        {Array.from({ length: sections }).map((_, index) => (
+        {Array.from({ length: SECTIONS_COUNT }).map((_, index) => (
           <button
             key={index}
-            onClick={() => scrollToSection(index)}
-            disabled={isScrolling}
+            onClick={() => goToSection(index)}
+            disabled={isTransitioning}
             className={`relative w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-700 ease-out nav-dot ${
               currentSection === index
                 ? "bg-blue-500 scale-125 shadow-lg shadow-blue-500/50 active"
                 : "bg-zinc-600 hover:bg-zinc-400 hover:scale-110"
-            } ${isScrolling ? "opacity-50" : "opacity-100"}`}
+            } ${isTransitioning ? "opacity-50" : "opacity-100"}`}
             aria-label={`Go to section ${index + 1}`}
-          ></button>
+          />
         ))}
       </div>
 
-      <div
-        ref={containerRef}
-        className="h-screen overflow-y-auto overflow-x-hidden smooth-scroll-container"
-      >
-        {/* Section 1: Landing */}
+      <div className="h-screen overflow-hidden">
         <div
-          ref={assignSectionRef(0)}
-          className="h-screen overflow-hidden section-fade"
-          data-section="0"
-          style={{ opacity: currentSection === 0 ? 1 : 0.8 }}
+          ref={containerRef}
+          className="h-full"
+          style={{ 
+            transform: `translateY(0vh)`,
+            transition: isTransitioning ? 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none'
+          }}
         >
-          <LandingSection onViewProjects={() => scrollToSection(3)} />
-        </div>
+          {/* Section 1: Landing */}
+          <div 
+            ref={assignSectionRef(0)}
+            className="h-screen overflow-hidden section-fade"
+          >
+            <LandingSection onViewProjects={() => goToSection(3)} />
+          </div>
 
-        {/* Section 2: Technologies */}
-        <div
-          ref={assignSectionRef(1)}
-          className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
-          data-section="1"
-          style={{ opacity: currentSection === 1 ? 1 : 0.8 }}
-        >
-          <TechnologiesSection isMobile={isMobile} />
-        </div>
+          {/* Section 2: Technologies */}
+          <div 
+            ref={assignSectionRef(1)}
+            className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
+          >
+            <TechnologiesSection isMobile={isMobile} />
+          </div>
 
-        {/* Section 3: Education & Experience */}
-        <div
-          ref={assignSectionRef(2)}
-          className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
-          data-section="2"
-          style={{ opacity: currentSection === 2 ? 1 : 0.8 }}
-        >
-          <EducationSection isMobile={isMobile} />
-        </div>
+          {/* Section 3: Education & Experience */}
+          <div 
+            ref={assignSectionRef(2)}
+            className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
+          >
+            <EducationSection isMobile={isMobile} />
+          </div>
 
-        {/* Section 4: Projects + Footer */}
-        <div
-          ref={assignSectionRef(3)}
-          className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
-          data-section="3"
-          style={{ opacity: currentSection === 3 ? 1 : 0.8 }}
-        >
-          <ProjectsSection isMobile={isMobile} />
+          {/* Section 4: Projects + Footer */}
+          <div 
+            ref={assignSectionRef(3)}
+            className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
+          >
+            <ProjectsSection isMobile={isMobile} />
+          </div>
         </div>
       </div>
     </>

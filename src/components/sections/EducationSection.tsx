@@ -29,7 +29,7 @@ const timelineData: TimelineItem[] = [
     current: true,
   },
   {
-    title: "Software Developer",
+    title: "Software Development",
     organization: "Rotterdam University of Applied Sciences",
     period: "2023 - Present",
     type: "education",
