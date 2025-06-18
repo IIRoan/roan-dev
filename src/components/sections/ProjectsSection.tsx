@@ -184,7 +184,6 @@ export default function ProjectsSection({ isMobile }: ProjectsSectionProps) {
         );
         const data = await response.json();
 
-        // Sort by stars (descending) and filter out profile repos
         const sortedProjects = data
           .filter((project: Project) => !project.name.includes("iiroan"))
           .sort(
@@ -211,8 +210,6 @@ export default function ProjectsSection({ isMobile }: ProjectsSectionProps) {
       } overflow-hidden flex flex-col`}
     >
       <GridBackground isMobile={isMobile} />
-
-      {/* Ambient lighting */}
       <div
         className={`absolute inset-0 transition-all duration-3000 ${
           isVisible ? "opacity-100" : "opacity-0"
@@ -221,10 +218,7 @@ export default function ProjectsSection({ isMobile }: ProjectsSectionProps) {
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/3 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/3 rounded-full blur-3xl" />
       </div>
-
-      {/* Projects Content */}
       <div className="relative z-10 mx-auto max-w-7xl flex-1">
-        {/* Header */}
         <div
           className={`${
             isMobile ? "mb-12" : "mb-20"
@@ -266,8 +260,6 @@ export default function ProjectsSection({ isMobile }: ProjectsSectionProps) {
             and check out the source code
           </p>
         </div>
-
-        {/* Projects Grid */}
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
@@ -294,7 +286,6 @@ export default function ProjectsSection({ isMobile }: ProjectsSectionProps) {
         )}
       </div>
 
-      {/* Footer integrated at bottom */}
       <div className="mt-auto">
         <FooterSection />
       </div>

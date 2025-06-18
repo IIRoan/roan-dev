@@ -41,20 +41,12 @@ const iconComponents = {
   traefik: SiTraefikproxy,
 };
 
-// Simplified tech clusters for mobile (similar to desktop but fewer icons and simpler)
 const mobileTechClusters = {
   topLeft: {
     position: { top: "8%", left: "6%" },
     icons: [
       { icon: "react", color: "#61DAFB", size: 28, x: 0, y: 0, delay: 0.2 },
-      {
-        icon: "typescript",
-        color: "#3178C6",
-        size: 24,
-        x: 45,
-        y: 25,
-        delay: 0.4,
-      },
+      { icon: "typescript", color: "#3178C6", size: 24, x: 45, y: 25, delay: 0.4 },
     ],
   },
   topRight: {
@@ -75,41 +67,19 @@ const mobileTechClusters = {
     position: { bottom: "15%", right: "8%" },
     icons: [
       { icon: "tailwind", color: "#06B6D4", size: 26, x: 0, y: 0, delay: 1.4 },
-      {
-        icon: "postgresql",
-        color: "#4169E1",
-        size: 27,
-        x: -35,
-        y: 25,
-        delay: 1.6,
-      },
+      { icon: "postgresql", color: "#4169E1", size: 27, x: -35, y: 25, delay: 1.6 },
     ],
   },
 };
 
-// Desktop tech clusters (original complex version)
 const desktopTechClusters = {
   frontend: {
     position: { top: "12%", left: "5%" },
     icons: [
       { icon: "react", color: "#61DAFB", size: 42, x: 0, y: 0, delay: 0.2 },
-      {
-        icon: "typescript",
-        color: "#3178C6",
-        size: 36,
-        x: 85,
-        y: -15,
-        delay: 0.4,
-      },
+      { icon: "typescript", color: "#3178C6", size: 36, x: 85, y: -15, delay: 0.4 },
       { icon: "nextjs", color: "#FFFFFF", size: 40, x: -25, y: 75, delay: 0.6 },
-      {
-        icon: "tailwind",
-        color: "#06B6D4",
-        size: 38,
-        x: 110,
-        y: 60,
-        delay: 0.8,
-      },
+      { icon: "tailwind", color: "#06B6D4", size: 38, x: 110, y: 60, delay: 0.8 },
     ],
   },
   backend: {
@@ -118,14 +88,7 @@ const desktopTechClusters = {
       { icon: "node", color: "#339933", size: 44, x: 0, y: 0, delay: 1.0 },
       { icon: "python", color: "#3776AB", size: 42, x: -75, y: 65, delay: 1.2 },
       { icon: "prisma", color: "#2D3748", size: 36, x: 85, y: 35, delay: 1.4 },
-      {
-        icon: "postgresql",
-        color: "#4169E1",
-        size: 40,
-        x: 15,
-        y: 95,
-        delay: 1.6,
-      },
+      { icon: "postgresql", color: "#4169E1", size: 40, x: 15, y: 95, delay: 1.6 },
     ],
   },
   tools: {
@@ -133,14 +96,7 @@ const desktopTechClusters = {
     icons: [
       { icon: "git", color: "#F05032", size: 36, x: 0, y: 0, delay: 1.8 },
       { icon: "linear", color: "#5E6AD2", size: 34, x: 75, y: -20, delay: 2.0 },
-      {
-        icon: "cloudflare",
-        color: "#F38020",
-        size: 38,
-        x: -35,
-        y: 65,
-        delay: 2.2,
-      },
+      { icon: "cloudflare", color: "#F38020", size: 38, x: -35, y: 65, delay: 2.2 },
     ],
   },
   devops: {
@@ -149,14 +105,7 @@ const desktopTechClusters = {
       { icon: "docker", color: "#2496ED", size: 40, x: 0, y: 0, delay: 2.4 },
       { icon: "linux", color: "#FCC624", size: 38, x: 80, y: -25, delay: 2.6 },
       { icon: "podman", color: "#892CA0", size: 36, x: -30, y: 70, delay: 2.8 },
-      {
-        icon: "traefik",
-        color: "#24A1C1",
-        size: 34,
-        x: 110,
-        y: 50,
-        delay: 3.0,
-      },
+      { icon: "traefik", color: "#24A1C1", size: 34, x: 110, y: 50, delay: 3.0 },
     ],
   },
   deployment: {
@@ -169,7 +118,6 @@ const desktopTechClusters = {
   },
 };
 
-// Simplified grid background
 const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -178,13 +126,8 @@ const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
   }, []);
 
   if (isMobile) {
-    // Much simpler grid for mobile
     return (
-      <div
-        className={`absolute inset-0 transition-opacity duration-1000 ${
-          isVisible ? "opacity-8" : "opacity-0"
-        }`}
-      >
+      <div className={`absolute inset-0 transition-opacity duration-1000 ${isVisible ? "opacity-8" : "opacity-0"}`}>
         <div
           className="absolute inset-0"
           style={{
@@ -199,13 +142,8 @@ const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
     );
   }
 
-  // Original complex grid for desktop
   return (
-    <div
-      className={`absolute inset-0 transition-opacity duration-2000 ${
-        isVisible ? "opacity-15" : "opacity-0"
-      }`}
-    >
+    <div className={`absolute inset-0 transition-opacity duration-2000 ${isVisible ? "opacity-15" : "opacity-0"}`}>
       <div
         className="absolute inset-0"
         style={{
@@ -240,7 +178,6 @@ const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
   );
 };
 
-// Optimized tech icons component with subtle mobile animations
 const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [isVisible, setIsVisible] = useState(false);
@@ -253,7 +190,6 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
 
     updateWindowSize();
     window.addEventListener("resize", updateWindowSize);
-
     const timer = setTimeout(() => setIsVisible(true), 500);
 
     return () => {
@@ -262,22 +198,17 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
     };
   }, []);
 
-  // Add subtle floating animation for mobile
   useEffect(() => {
     if (!isMobile) return;
 
     const floatingInterval = setInterval(() => {
       setFloatOffset(Date.now() * 0.001);
-    }, 100); // Slower update rate for mobile
+    }, 100);
 
     return () => clearInterval(floatingInterval);
   }, [isMobile]);
 
-  const calculatePosition = (
-    position: any,
-    windowWidth: number,
-    windowHeight: number
-  ) => {
+  const calculatePosition = (position: any, windowWidth: number, windowHeight: number) => {
     let left = 0;
     let top = 0;
 
@@ -285,7 +216,7 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
       left = (parseFloat(position.left) / 100) * windowWidth;
     } else if (position.right) {
       const rightPercentage = parseFloat(position.right);
-      const clusterWidth = isMobile ? 100 : 200; // Smaller cluster width for mobile
+      const clusterWidth = isMobile ? 100 : 200;
       left = windowWidth - (rightPercentage / 100) * windowWidth - clusterWidth;
     }
 
@@ -293,9 +224,8 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
       top = (parseFloat(position.top) / 100) * windowHeight;
     } else if (position.bottom) {
       const bottomPercentage = parseFloat(position.bottom);
-      const clusterHeight = isMobile ? 80 : 150; // Smaller cluster height for mobile
-      top =
-        windowHeight - (bottomPercentage / 100) * windowHeight - clusterHeight;
+      const clusterHeight = isMobile ? 80 : 150;
+      top = windowHeight - (bottomPercentage / 100) * windowHeight - clusterHeight;
     }
 
     return { left, top };
@@ -303,17 +233,12 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
 
   if (windowSize.width === 0) return null;
 
-  // Use simpler clusters for mobile
   const clusters = isMobile ? mobileTechClusters : desktopTechClusters;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
       {Object.entries(clusters).map(([clusterName, cluster]) => {
-        const clusterPosition = calculatePosition(
-          cluster.position,
-          windowSize.width,
-          windowSize.height
-        );
+        const clusterPosition = calculatePosition(cluster.position, windowSize.width, windowSize.height);
 
         return (
           <div
@@ -324,7 +249,6 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
               top: clusterPosition.top,
             }}
           >
-            {/* Simplified background glow */}
             <div
               className={`absolute inset-0 ${
                 isMobile ? "w-24 h-20" : "w-40 h-32"
@@ -333,16 +257,10 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
               }`}
             />
 
-            {/* Icons with simplified animations */}
             {cluster.icons.map((iconData, index) => {
-              const IconComponent =
-                iconComponents[iconData.icon as keyof typeof iconComponents];
-
-              // Calculate subtle floating movement for mobile
+              const IconComponent = iconComponents[iconData.icon as keyof typeof iconComponents];
               const floatX = isMobile ? Math.sin(floatOffset + index) * 2 : 0;
-              const floatY = isMobile
-                ? Math.cos(floatOffset + index * 0.7) * 1.5
-                : 0;
+              const floatY = isMobile ? Math.cos(floatOffset + index * 0.7) * 1.5 : 0;
 
               return (
                 <div
@@ -368,14 +286,10 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
                         ? "bg-zinc-900/20 border border-zinc-800/30"
                         : "bg-zinc-900/30 border border-zinc-800/40"
                     } transition-all duration-300 ${
-                      !isMobile
-                        ? "group-hover:border-zinc-700/80 group-hover:bg-zinc-800/60"
-                        : ""
+                      !isMobile ? "group-hover:border-zinc-700/80 group-hover:bg-zinc-800/60" : ""
                     }`}
                     style={{
-                      boxShadow: isMobile
-                        ? `0 0 8px ${iconData.color}08`
-                        : `0 0 15px ${iconData.color}15`,
+                      boxShadow: isMobile ? `0 0 8px ${iconData.color}08` : `0 0 15px ${iconData.color}15`,
                     }}
                   >
                     <IconComponent
@@ -398,7 +312,6 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
   );
 };
 
-// Enhanced floating geometry with better animations (desktop only)
 const FloatingGeometry = ({ isMobile }: { isMobile: boolean }) => {
   const [shapes, setShapes] = useState<
     Array<{
@@ -415,7 +328,7 @@ const FloatingGeometry = ({ isMobile }: { isMobile: boolean }) => {
   >([]);
 
   useEffect(() => {
-    if (isMobile) return; // Disable on mobile
+    if (isMobile) return;
 
     const initialShapes = Array.from({ length: 8 }, (_, i) => ({
       id: i,
@@ -425,10 +338,7 @@ const FloatingGeometry = ({ isMobile }: { isMobile: boolean }) => {
       opacity: Math.random() * 0.08 + 0.03,
       rotation: Math.random() * 360,
       rotationSpeed: (Math.random() - 0.5) * 0.2,
-      type: ["circle", "square", "triangle"][Math.floor(Math.random() * 3)] as
-        | "circle"
-        | "square"
-        | "triangle",
+      type: ["circle", "square", "triangle"][Math.floor(Math.random() * 3)] as "circle" | "square" | "triangle",
       floatOffset: Math.random() * Math.PI * 2,
     }));
     setShapes(initialShapes);
@@ -488,7 +398,6 @@ const FloatingGeometry = ({ isMobile }: { isMobile: boolean }) => {
   );
 };
 
-// Enhanced animated particles with better movement
 const AnimatedParticles = ({ isMobile }: { isMobile: boolean }) => {
   const [particles, setParticles] = useState<
     Array<{
@@ -504,7 +413,7 @@ const AnimatedParticles = ({ isMobile }: { isMobile: boolean }) => {
   >([]);
 
   useEffect(() => {
-    const particleCount = isMobile ? 8 : 25; // Much fewer particles on mobile
+    const particleCount = isMobile ? 8 : 25;
     const initialParticles = Array.from({ length: particleCount }, (_, i) => ({
       id: i,
       x: Math.random() * window.innerWidth,
@@ -519,7 +428,7 @@ const AnimatedParticles = ({ isMobile }: { isMobile: boolean }) => {
   }, [isMobile]);
 
   useEffect(() => {
-    const updateInterval = isMobile ? 32 : 16; // Slower updates on mobile
+    const updateInterval = isMobile ? 32 : 16;
     const interval = setInterval(() => {
       setParticles((prev) =>
         prev.map((particle) => {
@@ -527,13 +436,11 @@ const AnimatedParticles = ({ isMobile }: { isMobile: boolean }) => {
           let newY = particle.y + particle.vy;
           let newLife = particle.life + updateInterval;
 
-          // Wrap around edges
           if (newX < 0) newX = window.innerWidth;
           if (newX > window.innerWidth) newX = 0;
           if (newY < 0) newY = window.innerHeight;
           if (newY > window.innerHeight) newY = 0;
 
-          // Reset if life exceeded
           if (newLife > particle.maxLife) {
             newLife = 0;
             newX = Math.random() * window.innerWidth;
@@ -556,9 +463,7 @@ const AnimatedParticles = ({ isMobile }: { isMobile: boolean }) => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {particles.map((particle) => {
-        const opacity =
-          Math.sin((particle.life / particle.maxLife) * Math.PI) *
-          (isMobile ? 0.2 : 0.4);
+        const opacity = Math.sin((particle.life / particle.maxLife) * Math.PI) * (isMobile ? 0.2 : 0.4);
         return (
           <div
             key={particle.id}
@@ -578,7 +483,6 @@ const AnimatedParticles = ({ isMobile }: { isMobile: boolean }) => {
   );
 };
 
-// Optimized typewriter effect
 const TypewriterText = ({ isMobile }: { isMobile: boolean }) => {
   const [displayedText, setDisplayedText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -590,7 +494,7 @@ const TypewriterText = ({ isMobile }: { isMobile: boolean }) => {
   const fullText = firstPart + secondPart;
 
   useEffect(() => {
-    const typingSpeed = isMobile ? 50 : 30; // Slightly slower on mobile
+    const typingSpeed = isMobile ? 50 : 30;
     const startDelay = setTimeout(() => {
       if (currentIndex < firstPart.length && !isPaused) {
         const timer = setTimeout(() => {
@@ -606,12 +510,9 @@ const TypewriterText = ({ isMobile }: { isMobile: boolean }) => {
             setCurrentIndex(currentIndex + 1);
           },
           isMobile ? 1500 : 2000
-        ); // Shorter pause on mobile
+        );
         return () => clearTimeout(pauseTimer);
-      } else if (
-        currentIndex > firstPart.length &&
-        currentIndex < fullText.length
-      ) {
+      } else if (currentIndex > firstPart.length && currentIndex < fullText.length) {
         const timer = setTimeout(() => {
           setDisplayedText(fullText.slice(0, currentIndex + 1));
           setCurrentIndex(currentIndex + 1);
@@ -631,18 +532,10 @@ const TypewriterText = ({ isMobile }: { isMobile: boolean }) => {
   }, []);
 
   return (
-    <h1
-      className={`${
-        isMobile ? "text-2xl sm:text-3xl" : "text-4xl md:text-6xl lg:text-7xl"
-      } font-light tracking-tight mb-6`}
-    >
+    <h1 className={`${isMobile ? "text-2xl sm:text-3xl" : "text-4xl md:text-6xl lg:text-7xl"} font-light tracking-tight mb-6`}>
       <span className="text-zinc-100">
         {displayedText}
-        <span
-          className={`${
-            showCursor ? "opacity-100" : "opacity-0"
-          } transition-opacity duration-100 text-zinc-100`}
-        >
+        <span className={`${showCursor ? "opacity-100" : "opacity-0"} transition-opacity duration-100 text-zinc-100`}>
           |
         </span>
       </span>
@@ -650,22 +543,14 @@ const TypewriterText = ({ isMobile }: { isMobile: boolean }) => {
   );
 };
 
-export default function LandingSection({
-  onViewProjects,
-}: {
-  onViewProjects?: () => void;
-}) {
+export default function LandingSection({ onViewProjects }: { onViewProjects?: () => void }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Detect mobile
     const checkMobile = () => {
       setIsMobile(
-        window.innerWidth < 768 ||
-          /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            navigator.userAgent
-          )
+        window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
       );
     };
 
@@ -678,30 +563,19 @@ export default function LandingSection({
 
   return (
     <section className="relative h-screen w-full snap-start overflow-hidden bg-zinc-950">
-      {/* Base gradient background */}
       <div
         className={`absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900/95 to-zinc-950 transition-opacity duration-1000 ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       />
 
-      {/* Grid background */}
       <GridBackground isMobile={isMobile} />
-
-      {/* Tech icons */}
       <ClusteredTechIcons isMobile={isMobile} />
-
-      {/* Floating geometry (disabled on mobile) */}
       <FloatingGeometry isMobile={isMobile} />
-
-      {/* Particles (reduced on mobile) */}
       <AnimatedParticles isMobile={isMobile} />
 
-      {/* Simplified ambient lighting */}
       <div
-        className={`absolute inset-0 transition-all duration-2000 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute inset-0 transition-all duration-2000 ${isLoaded ? "opacity-100" : "opacity-0"}`}
       >
         <div
           className={`absolute top-1/3 left-1/3 ${
@@ -715,21 +589,16 @@ export default function LandingSection({
         />
       </div>
 
-      {/* Main content */}
       <div className="relative z-40 flex h-full items-center justify-center">
         <div className={`text-center ${isMobile ? "px-6" : "px-8"}`}>
-          {/* Logo */}
           <div
             className={`${
               isMobile ? "mb-6" : "mb-10"
             } flex justify-center transition-all duration-1000 ease-out ${
-              isLoaded
-                ? "opacity-100 scale-100 translate-y-0"
-                : "opacity-0 scale-75 translate-y-8"
+              isLoaded ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-75 translate-y-8"
             }`}
           >
             <div className="relative group">
-              {/* Stronger background for mobile to ensure visibility */}
               <div
                 className={`absolute inset-0 bg-gradient-to-r from-blue-500/${
                   isMobile ? "12" : "8"
@@ -741,19 +610,15 @@ export default function LandingSection({
                 width={isMobile ? 50 : 80}
                 height={isMobile ? 50 : 80}
                 className={`relative z-10 opacity-95 drop-shadow-2xl transition-all duration-500 ${
-                  !isMobile
-                    ? "group-hover:scale-110 group-hover:drop-shadow-[0_0_30px_rgba(59,130,246,0.3)]"
-                    : ""
+                  !isMobile ? "group-hover:scale-110 group-hover:drop-shadow-[0_0_30px_rgba(59,130,246,0.3)]" : ""
                 }`}
                 priority
               />
             </div>
           </div>
 
-          {/* Typewriter text */}
           <TypewriterText isMobile={isMobile} />
 
-          {/* Subtitle */}
           <p
             className={`${
               isMobile ? "text-sm px-2 mb-6" : "text-lg md:text-xl mb-10"
@@ -765,7 +630,6 @@ export default function LandingSection({
             Full-stack developer creating fun stuff
           </p>
 
-          {/* Action buttons */}
           <div
             className={`flex flex-col ${
               isMobile ? "gap-3" : "sm:flex-row gap-4"
@@ -789,9 +653,7 @@ export default function LandingSection({
               className={`${
                 isMobile ? "w-full max-w-xs px-6 py-3 text-sm" : "px-6 py-3"
               } border border-zinc-600 hover:border-zinc-500 text-zinc-300 hover:text-zinc-200 rounded-md transition-all duration-300 ${
-                !isMobile
-                  ? "hover:scale-105 hover:bg-zinc-800/50"
-                  : "hover:bg-zinc-800/30"
+                !isMobile ? "hover:scale-105 hover:bg-zinc-800/50" : "hover:bg-zinc-800/30"
               } cursor-pointer`}
             >
               Contact Me
@@ -800,24 +662,15 @@ export default function LandingSection({
         </div>
       </div>
 
-      {/* Corner accent gradients (simplified on mobile) */}
       <div
-        className={`absolute top-0 left-0 ${
-          isMobile ? "w-48 h-48" : "w-64 h-64"
-        } bg-gradient-to-br from-blue-500/${
+        className={`absolute top-0 left-0 ${isMobile ? "w-48 h-48" : "w-64 h-64"} bg-gradient-to-br from-blue-500/${
           isMobile ? "8" : "15"
-        } to-transparent blur-3xl transition-all duration-2000 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}
+        } to-transparent blur-3xl transition-all duration-2000 ${isLoaded ? "opacity-100" : "opacity-0"}`}
       />
       <div
-        className={`absolute bottom-0 right-0 ${
-          isMobile ? "w-48 h-48" : "w-64 h-64"
-        } bg-gradient-to-tl from-purple-500/${
+        className={`absolute bottom-0 right-0 ${isMobile ? "w-48 h-48" : "w-64 h-64"} bg-gradient-to-tl from-purple-500/${
           isMobile ? "8" : "15"
-        } to-transparent blur-3xl transition-all duration-2000 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}
+        } to-transparent blur-3xl transition-all duration-2000 ${isLoaded ? "opacity-100" : "opacity-0"}`}
       />
     </section>
   );

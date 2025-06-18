@@ -143,10 +143,10 @@ const technologies: Technology[] = [
   },
 ];
 
-// Grid Background (unchanged)
 const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => setIsVisible(true), []);
+  
   const gridSize = isMobile ? "60px 60px" : "100px 100px";
   const minorGridSize = isMobile ? "15px 15px" : "25px 25px";
   const accentGridSize = isMobile ? "200px 200px" : "400px 400px";
@@ -157,7 +157,6 @@ const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
         isVisible ? "opacity-10" : "opacity-0"
       }`}
     >
-      {/* Major */}
       <div
         className="absolute inset-0"
         style={{
@@ -167,7 +166,6 @@ const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
           backgroundSize: gridSize,
         }}
       />
-      {/* Minor */}
       <div
         className="absolute inset-0"
         style={{
@@ -177,7 +175,6 @@ const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
           backgroundSize: minorGridSize,
         }}
       />
-      {/* Accent */}
       <div
         className="absolute inset-0"
         style={{
@@ -191,11 +188,8 @@ const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
   );
 };
 
-// Simple particle & geometry omitted for brevity...
 const FloatingParticles = ({ isMobile }: { isMobile: boolean }) => null;
 const FloatingGeometry = ({ isMobile }: { isMobile: boolean }) => null;
-
-// Tech Card (unchanged)
 const TechCard = ({
   tech,
   index,
@@ -220,7 +214,6 @@ const TechCard = ({
       }`}
       style={{ transitionDelay: `${index * (isMobile ? 0.05 : 0.1)}s` }}
     >
-      {/* ... icon & content (same as before) */}
       <div
         className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl -z-10"
         style={{
@@ -274,7 +267,6 @@ export default function TechnologiesSection({
   const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Trigger entrance animations
   useEffect(() => {
     setIsVisible(true);
     const observer = new IntersectionObserver(
@@ -288,7 +280,6 @@ export default function TechnologiesSection({
     return () => observer.disconnect();
   }, [isMobile]);
 
-  // Desktop-only scroll parallax
   useEffect(() => {
     if (isMobile) return;
     const onScroll = () => setScrollY(window.scrollY);
@@ -303,12 +294,9 @@ export default function TechnologiesSection({
         isMobile ? "px-4 py-16" : "px-8 py-24 md:px-16"
       } overflow-hidden`}
     >
-      {/* BG & particles */}
       <GridBackground isMobile={isMobile} />
       <FloatingParticles isMobile={isMobile} />
       <FloatingGeometry isMobile={isMobile} />
-
-      {/* Ambient lights with parallax */}
       <div className="absolute inset-0 transition-all duration-3000">
         <div
           className={`absolute ${
@@ -347,10 +335,7 @@ export default function TechnologiesSection({
           }}
         />
       </div>
-
-      {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl">
-        {/* Header */}
         <div
           className={`mb-20 transition-all duration-1000 ease-out ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -384,8 +369,6 @@ export default function TechnologiesSection({
             These are the core tools and frameworks I use in my work
           </p>
         </div>
-
-        {/* Grid with increased gap */}
         <div
           className={`grid gap-${isMobile ? "6" : "8"} ${
             isMobile
@@ -403,8 +386,6 @@ export default function TechnologiesSection({
             />
           ))}
         </div>
-
-        {/* Bottom accent */}
         <div
           className={`${
             isMobile ? "mt-12" : "mt-20"
@@ -436,8 +417,6 @@ export default function TechnologiesSection({
           </div>
         </div>
       </div>
-
-      {/* Corner accents */}
       <div
         className={`absolute top-0 left-0 ${
           isMobile ? "w-48 h-48" : "w-64 h-64"

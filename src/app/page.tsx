@@ -13,14 +13,12 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const lastScrollTime = useRef(0);
-  const animationRef = useRef<number | null>(null);
 
   const SECTIONS_COUNT = 4;
-  const SCROLL_COOLDOWN = 800; // ms
+  const SCROLL_COOLDOWN = 800;
   const SWIPE_THRESHOLD = 80;
   const SWIPE_TIME_LIMIT = 600;
 
-  // Initialize page position
   useEffect(() => {
     const container = containerRef.current;
     if (container) {
@@ -30,7 +28,6 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
-  // Detect mobile devices
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
@@ -41,7 +38,6 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Clean section transition function
   const transitionToSection = useCallback((targetIndex: number) => {
     const container = containerRef.current;
     if (!container || isTransitioning) return;
@@ -49,7 +45,6 @@ export default function Home() {
     const clampedIndex = Math.max(0, Math.min(targetIndex, SECTIONS_COUNT - 1));
     if (clampedIndex === currentSection) return;
 
-    // Prevent rapid scrolling
     const now = Date.now();
     if (now - lastScrollTime.current < SCROLL_COOLDOWN) return;
     lastScrollTime.current = now;
@@ -57,12 +52,10 @@ export default function Home() {
     setIsTransitioning(true);
     setCurrentSection(clampedIndex);
 
-    // Simple transform-based transition
     const translateY = -(clampedIndex * 100);
     container.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
     container.style.transform = `translateY(${translateY}vh)`;
 
-    // Reset transition state
     const cleanup = () => {
       setIsTransitioning(false);
       container.style.transition = '';
@@ -71,12 +64,10 @@ export default function Home() {
     setTimeout(cleanup, 800);
   }, [currentSection, isTransitioning]);
 
-  // Navigate to specific section
   const goToSection = useCallback((index: number) => {
     transitionToSection(index);
   }, [transitionToSection]);
 
-  // Helper functions for scrollable sections
   const getSectionElement = (index: number) => {
     return sectionRefs.current[index];
   };
@@ -98,45 +89,36 @@ export default function Home() {
     return sectionElement.scrollTop <= 5;
   };
 
-  // Check if we can transition based on current section scroll position
-  const canTransitionFromSection = (direction: number) => {
+  const canTransitionFromSection = useCallback((direction: number) => {
     const currentSectionElement = getSectionElement(currentSection);
     const isScrollable = isSectionScrollable(currentSectionElement);
     
-    // Non-scrollable sections (Landing, Technologies) - always allow transition
     if (!isScrollable) return true;
     
-    // Scrollable sections (Education, Projects) - check boundaries
     if (direction > 0) {
-      // Scrolling down - check if at bottom
       return isAtBottomOfSection(currentSectionElement);
     } else {
-      // Scrolling up - check if at top
       return isAtTopOfSection(currentSectionElement);
     }
-  };
+  }, [currentSection]);
 
-  // Wheel event handler
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (isMobile || isTransitioning) return;
       
       const direction = e.deltaY > 0 ? 1 : -1;
       
-      // Check if we can transition from current section
       if (canTransitionFromSection(direction)) {
         e.preventDefault();
         const targetSection = currentSection + direction;
         transitionToSection(targetSection);
       }
-      // If we can't transition, allow normal scrolling within the section
     };
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     return () => window.removeEventListener('wheel', handleWheel);
   }, [currentSection, isTransitioning, isMobile, transitionToSection, canTransitionFromSection]);
 
-  // Touch event handler for mobile
   useEffect(() => {
     if (!isMobile) return;
 
@@ -158,7 +140,6 @@ export default function Home() {
       if (Math.abs(deltaY) > SWIPE_THRESHOLD && touchTime < SWIPE_TIME_LIMIT) {
         const direction = deltaY > 0 ? 1 : -1;
         
-        // Check if we can transition from current section
         if (canTransitionFromSection(direction)) {
           const targetSection = currentSection + direction;
           transitionToSection(targetSection);
@@ -175,7 +156,6 @@ export default function Home() {
     };
   }, [currentSection, isTransitioning, isMobile, transitionToSection, canTransitionFromSection]);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isTransitioning) return;
@@ -214,14 +194,12 @@ export default function Home() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentSection, isTransitioning, transitionToSection]);
 
-  // Assign section refs
   const assignSectionRef = (index: number) => (el: HTMLDivElement | null) => {
     sectionRefs.current[index] = el;
   };
 
   return (
     <>
-      {/* Navigation dots */}
       <div className="fixed right-4 md:right-8 top-1/2 transform -translate-y-1/2 z-50 flex flex-col space-y-4">
         {Array.from({ length: SECTIONS_COUNT }).map((_, index) => (
           <button
@@ -247,7 +225,6 @@ export default function Home() {
             transition: isTransitioning ? 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none'
           }}
         >
-          {/* Section 1: Landing */}
           <div 
             ref={assignSectionRef(0)}
             className="h-screen overflow-hidden section-fade"
@@ -255,7 +232,6 @@ export default function Home() {
             <LandingSection onViewProjects={() => goToSection(3)} />
           </div>
 
-          {/* Section 2: Technologies */}
           <div 
             ref={assignSectionRef(1)}
             className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
@@ -263,7 +239,6 @@ export default function Home() {
             <TechnologiesSection isMobile={isMobile} />
           </div>
 
-          {/* Section 3: Education & Experience */}
           <div 
             ref={assignSectionRef(2)}
             className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
@@ -271,7 +246,6 @@ export default function Home() {
             <EducationSection isMobile={isMobile} />
           </div>
 
-          {/* Section 4: Projects + Footer */}
           <div 
             ref={assignSectionRef(3)}
             className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
