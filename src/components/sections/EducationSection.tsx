@@ -1,171 +1,315 @@
 "use client";
 
-import { WorkExperience } from "@/components/work-experience";
-import type { ExperienceItemType } from "@/components/work-experience";
+import { useEffect, useState, useRef } from "react";
+import TimelineSection from "@/components/timeline-section";
 import { Fade } from "@/components/animate-ui/primitives/effects/fade";
-import GridBackground from "@/components/ui/GridBackground";
+import { type ExperienceItem } from "@/components/experience-item";
+import { SectionHeaderDivider, Divider } from "@/components/ui/divider";
 
 interface EducationSectionProps {
   isMobile: boolean;
 }
 
-const WORK_EXPERIENCE: ExperienceItemType[] = [
+const WORK_EXPERIENCE: ExperienceItem[] = [
   {
     id: "1",
-    companyName: "Test-Correct",
-    isCurrentEmployer: true,
-    positions: [
-      {
-        id: "1-1",
-        title: "Junior Development & Automation Specialist",
-        employmentPeriod: "2024 - Present",
-        employmentType: "Full-time",
-        description:
-          "Developing automation solutions and software applications.",
-        icon: "code",
-        skills: ["Software Development", "Automation"],
-        isExpanded: true,
-      },
+    title: "Junior Development & Automation Specialist",
+    company: "Test-Correct",
+    period: "2024 - Present",
+    type: "Full-time",
+    description: "Developing automations and software applications.",
+    icon: "code",
+    skills: [
+      "Software Development",
+      "Automation",
+      "CI/CD",
+      "JavaScript",
+      "NextJS",
+      "NestJS",
     ],
+    isCurrent: true,
+    location: "Rotterdam, Netherlands",
   },
   {
     id: "2",
-    companyName: "De Pannekoek en De Kale (DPDK)",
-    positions: [
-      {
-        id: "2-1",
-        title: "DevOps Intern",
-        employmentPeriod: "2021 - 2022",
-        employmentType: "Internship",
-        description:
-          "Gained hands-on experience with DevOps practices and development.",
-        icon: "code",
-        skills: ["DevOps", "Development", "Internship"],
-      },
-    ],
+    title: "DevOps Intern",
+    company: "De Pannekoek en De Kale (DPDK)",
+    period: "2021 - 2022",
+    type: "Internship",
+    description:
+      "Gained valuable hands-on experience with DevOps practices, CI/CD pipelines, and web development.",
+    icon: "code",
+    skills: ["DevOps", "CI/CD", "Docker", "Jenkins", "Linux", "VPN"],
+    location: "Rotterdam, Netherlands",
   },
   {
     id: "3",
-    companyName: "Albert Heijn",
-    positions: [
-      {
-        id: "3-1",
-        title: "Part-time Employee",
-        employmentPeriod: "2018 - 2024",
-        employmentType: "Part-time",
-        description:
-          "Retail operations and customer service.",
-        icon: "business",
-      },
-    ],
+    title: "Part-time Employee",
+    company: "Albert Heijn",
+    period: "2018 - 2024",
+    type: "Part-time",
+    description: "Retail operations and customer service.",
+    icon: "business",
+    location: "Rotterdam, Netherlands",
   },
 ];
 
-const EDUCATION_EXPERIENCE: ExperienceItemType[] = [
+const EDUCATION_EXPERIENCE: ExperienceItem[] = [
   {
     id: "4",
-    companyName: "Rotterdam University of Applied Sciences",
-    isCurrentEmployer: true,
-    positions: [
-      {
-        id: "4-1",
-        title: "Software Development",
-        employmentPeriod: "2023 - Present",
-        employmentType: "Full-time",
-        description:
-          "Studying modern software development and technologies.",
-        icon: "education",
-        skills: ["Software Engineering", "Web Development"],
-        isExpanded: true,
-      },
-    ],
+    title: "Software Development",
+    company: "Rotterdam University of Applied Sciences",
+    period: "2023 - Present",
+    type: "Full-time",
+    description:
+      "Currently studying modern software development with a focus on web technologies, software architecture, and agile methodologies.",
+    icon: "education",
+    skills: ["React", "Web Development", "Agile", "Python", "TypeScript"],
+    isCurrent: true,
+    location: "Rotterdam, Netherlands",
   },
   {
     id: "5",
-    companyName: "Grafisch Lyceum Rotterdam",
-    positions: [
-      {
-        id: "5-1",
-        title: "Network & Media Management - IT",
-        employmentPeriod: "2018 - 2022",
-        employmentType: "Full-time",
-        description:
-          "Specialized in network management and digital media technologies.",
-        icon: "education",
-        skills: ["Network Management", "Media Technologies", "IT"],
-      },
+    title: "Network & Media Management - IT",
+    company: "Grafisch Lyceum Rotterdam",
+    period: "2018 - 2022",
+    type: "Full-time",
+    description:
+      "Specialized education in network management, system administration, and digital media technologies.",
+    icon: "education",
+    skills: [
+      "Network Management",
+      "Media Technologies",
+      "IT Support",
+      "Windows Server",
     ],
+    location: "Rotterdam, Netherlands",
   },
   {
     id: "6",
-    companyName: "Melanchthon de Blesewic",
-    positions: [
-      {
-        id: "6-1",
-        title: "Mavo VMBO-TL",
-        employmentPeriod: "2014 - 2018",
-        employmentType: "Full-time",
-        description:
-          "Middleschool education.",
-        icon: "education",
-      },
-    ],
+    title: "Mavo VMBO-TL",
+    company: "Melanchthon de Blesewic",
+    period: "2014 - 2018",
+    type: "Full-time",
+    description:
+      "General secondary education with focus on theoretical learning (TL track).",
+    icon: "education",
+    location: "Rotterdam, Netherlands",
   },
 ];
 
-export default function EducationSection({ isMobile }: EducationSectionProps) {
+const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => setIsVisible(true), []);
+
+  const gridSize = isMobile ? "60px 60px" : "100px 100px";
+  const minorGridSize = isMobile ? "15px 15px" : "25px 25px";
+  const accentGridSize = isMobile ? "200px 200px" : "400px 400px";
+
   return (
-    <section id="education" className={`relative w-full bg-zinc-950 ${isMobile ? "px-4 py-16" : "px-8 py-20 md:px-16"}`}>
+    <div
+      className={`absolute inset-0 transition-opacity duration-2000 ${
+        isVisible ? "opacity-10" : "opacity-0"
+      }`}
+    >
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `
+          linear-gradient(to right, rgba(63,63,70,0.6) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(63,63,70,0.6) 1px, transparent 1px)`,
+          backgroundSize: gridSize,
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `
+          linear-gradient(to right, rgba(63,63,70,0.3) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(63,63,70,0.3) 1px, transparent 1px)`,
+          backgroundSize: minorGridSize,
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `
+          linear-gradient(to right, rgba(59,130,246,0.2) 2px, transparent 2px),
+          linear-gradient(to bottom, rgba(59,130,246,0.2) 2px, transparent 2px)`,
+          backgroundSize: accentGridSize,
+        }}
+      />
+    </div>
+  );
+};
+
+export default function EducationSection({ isMobile }: EducationSectionProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const [sectionVisible, setSectionVisible] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    setIsVisible(true);
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) setSectionVisible(true);
+        }),
+      { threshold: isMobile ? 0.1 : 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (isMobile) return;
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isMobile]);
+
+  return (
+    <section
+      ref={sectionRef}
+      id="education"
+      className={`relative w-full bg-zinc-950 ${
+        isMobile ? "px-4 py-16" : "px-8 py-20 md:px-16"
+      } overflow-hidden`}
+    >
       <GridBackground isMobile={isMobile} />
-      <div className="relative z-10 mx-auto max-w-6xl">
+      <div className="absolute inset-0 transition-all duration-3000">
+        <div
+          className={`absolute ${
+            isMobile
+              ? "top-1/4 left-1/4 w-64 h-64"
+              : "top-1/4 left-1/4 w-96 h-96"
+          } bg-purple-500/3 rounded-full blur-3xl`}
+          style={{
+            transform: `translateY(${
+              isVisible && !isMobile ? scrollY * 0.1 : 0
+            }px)`,
+          }}
+        />
+        <div
+          className={`absolute ${
+            isMobile
+              ? "bottom-1/4 right-1/4 w-64 h-64"
+              : "bottom-1/4 right-1/4 w-96 h-96"
+          } bg-amber-500/3 rounded-full blur-3xl`}
+          style={{
+            transform: `translateY(${
+              isVisible && !isMobile ? -scrollY * 0.1 : 0
+            }px)`,
+          }}
+        />
+        <div
+          className={`absolute ${
+            isMobile
+              ? "top-3/4 left-3/4 w-48 h-48"
+              : "top-3/4 left-3/4 w-64 h-64"
+          } bg-indigo-500/3 rounded-full blur-3xl`}
+          style={{
+            transform: `translateY(${
+              isVisible && !isMobile ? scrollY * 0.05 : 0
+            }px)`,
+          }}
+        />
+      </div>
+      <div className="relative z-10 mx-auto max-w-5xl">
         <Fade delay={0} className="transition-all duration-1000 ease-out">
-          <div className={`flex items-center ${isMobile ? "mb-4" : "mb-6"}`}>
-            <div className="h-px bg-gradient-to-r from-transparent via-zinc-500 to-transparent flex-1" />
-            <span
-              className={`${isMobile ? "px-4" : "px-6"} text-xs text-zinc-500 uppercase tracking-[0.3em]`}
+          <SectionHeaderDivider className={isMobile ? "mb-4" : "mb-6"}>
+            Journey
+          </SectionHeaderDivider>
+
+          <div
+            className={`text-center mb-12 transition-all duration-1000 ease-out ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+          >
+            <h2
+              className={`${
+                isMobile ? "text-3xl md:text-4xl" : "text-5xl md:text-6xl"
+              } font-light text-zinc-100`}
             >
-              Journey
-            </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-zinc-500 to-transparent flex-1" />
-          </div>
-          
-          <div className="text-center mb-4">
-            <h2 className="text-3xl md:text-5xl font-bold text-zinc-100">Education & Experience</h2>
+              <span className="bg-gradient-to-r from-zinc-100 via-zinc-200 to-zinc-100 bg-clip-text text-transparent">
+                Education & Experience
+              </span>
+            </h2>
           </div>
         </Fade>
 
-        <Fade delay={200} className="text-zinc-400 text-center mb-16 max-w-2xl mx-auto">
-          My academic and professional development journey
-        </Fade>
-
-        <div className="space-y-12">
-          <div>
-            <h3 className="text-2xl font-bold text-zinc-100 mb-6 flex items-center gap-3">
-              <div className="h-px flex-1 bg-zinc-800" />
-              <span className="text-sm uppercase tracking-wider text-zinc-500 font-medium">Work Experience</span>
-              <div className="h-px flex-1 bg-zinc-800" />
-            </h3>
+        <div
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 transition-all duration-1000 ease-out ${
+            sectionVisible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-8"
+          }`}
+          style={{ transitionDelay: "0.2s" }}
+        >
+          {/* Work Experience */}
+          <div
+            className={`transition-all duration-700 ease-out ${
+              sectionVisible
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 -translate-x-8"
+            }`}
+            style={{ transitionDelay: "0.4s" }}
+          >
             <Fade delay={300}>
-              <div className="max-w-4xl mx-auto">
-                <WorkExperience experiences={WORK_EXPERIENCE} />
-              </div>
+              <TimelineSection
+                experiences={WORK_EXPERIENCE}
+                title="Work Experience"
+              />
             </Fade>
           </div>
 
-          <div>
-            <h3 className="text-2xl font-bold text-zinc-100 mb-6 flex items-center gap-3">
-              <div className="h-px flex-1 bg-zinc-800" />
-              <span className="text-sm uppercase tracking-wider text-zinc-500 font-medium">Education</span>
-              <div className="h-px flex-1 bg-zinc-800" />
-            </h3>
+          {/* Education */}
+          <div
+            className={`transition-all duration-700 ease-out ${
+              sectionVisible
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 translate-x-8"
+            }`}
+            style={{ transitionDelay: "0.6s" }}
+          >
             <Fade delay={400}>
-              <div className="max-w-4xl mx-auto">
-                <WorkExperience experiences={EDUCATION_EXPERIENCE} />
-              </div>
+              <TimelineSection
+                experiences={EDUCATION_EXPERIENCE}
+                title="Education"
+                reverse
+              />
             </Fade>
           </div>
         </div>
+
+        <div
+          className={`mt-20 transition-all duration-1000 ease-out ${
+            sectionVisible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-8"
+          }`}
+          style={{ transitionDelay: "0.8s" }}
+        ></div>
       </div>
+
+      {/* Decorative corner elements */}
+      <div
+        className={`absolute top-0 left-0 ${
+          isMobile ? "w-48 h-48" : "w-64 h-64"
+        } bg-gradient-to-br from-purple-500/8 to-transparent blur-3xl transition-all duration-3000 ${
+          isVisible ? "opacity-100" : "opacity-0"
+        }`}
+      />
+      <div
+        className={`absolute bottom-0 right-0 ${
+          isMobile ? "w-48 h-48" : "w-64 h-64"
+        } bg-gradient-to-tl from-amber-500/8 to-transparent blur-3xl transition-all duration-3000 ${
+          isVisible ? "opacity-100" : "opacity-0"
+        }`}
+      />
     </section>
   );
 }

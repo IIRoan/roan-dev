@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import FooterSection from "./FooterSection";
 import GridBackground from "@/components/ui/GridBackground";
+import { SectionHeaderDivider } from "@/components/ui/divider";
 
 interface ProjectsSectionProps {
   isMobile: boolean;
@@ -192,17 +193,9 @@ export default function ProjectsSection({ isMobile }: ProjectsSectionProps) {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <div className={`flex items-center ${isMobile ? "mb-4" : "mb-6"}`}>
-            <div className="h-px bg-gradient-to-r from-transparent via-zinc-500 to-transparent flex-1" />
-            <span
-              className={`${
-                isMobile ? "px-4" : "px-6"
-              } text-xs text-zinc-500 uppercase tracking-[0.3em]`}
-            >
-              Portfolio
-            </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-zinc-500 to-transparent flex-1" />
-          </div>
+          <SectionHeaderDivider className={isMobile ? "mb-4" : "mb-6"}>
+            Portfolio
+          </SectionHeaderDivider>
 
           <h2
             className={`${
@@ -227,9 +220,9 @@ export default function ProjectsSection({ isMobile }: ProjectsSectionProps) {
           </p>
         </div>
         {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-            <span className="ml-4 text-zinc-400">Loading projects...</span>
+          <div className="flex flex-col justify-center items-center py-20 space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-2 border-zinc-700 border-t-transparent"></div>
+            <span className="text-zinc-400">Loading projects...</span>
           </div>
         ) : (
           <div

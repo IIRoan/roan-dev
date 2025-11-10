@@ -2,6 +2,7 @@
 
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import Image from "next/image";
+import { Divider } from "@/components/ui/divider";
 
 const socialLinks = [
   {
@@ -28,7 +29,8 @@ export default function FooterSection() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative w-full bg-zinc-950 border-t border-zinc-800/50">
+    <footer className="relative w-full bg-zinc-950">
+      <Divider variant="section-footer" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-950/50 to-zinc-950 pointer-events-none" />
 
       <div className="relative px-4 py-8 md:px-8 lg:px-16">
@@ -86,7 +88,7 @@ export default function FooterSection() {
           </div>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-zinc-800/50" />
+              <Divider variant="section-footer" />
             </div>
           </div>
           <div className="mt-6 p-2 flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 text-center md:text-left">

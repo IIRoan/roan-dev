@@ -17,6 +17,11 @@ import {
   SiExpo,
 } from "react-icons/si";
 import { IconType } from "react-icons";
+import { useCardGlow } from "@/hooks/useGlowEffect";
+import {
+  SectionHeaderDivider,
+  DecorativeDivider,
+} from "@/components/ui/divider";
 
 interface TechnologiesSectionProps {
   isMobile: boolean;
@@ -26,7 +31,7 @@ interface Technology {
   icon: IconType;
   name: string;
   description: string;
-  color: string;
+  colorKey: string;
   bgColor: string;
   borderColor: string;
   category: string;
@@ -37,7 +42,7 @@ const technologies: Technology[] = [
     icon: FaReact,
     name: "React",
     description: "JavaScript Library",
-    color: "#61DAFB",
+    colorKey: "react",
     bgColor: "bg-cyan-500/10",
     borderColor: "border-cyan-500/20",
     category: "Frontend",
@@ -46,7 +51,7 @@ const technologies: Technology[] = [
     icon: SiTypescript,
     name: "TypeScript",
     description: "JavaScript but better",
-    color: "#3178C6",
+    colorKey: "typescript",
     bgColor: "bg-blue-500/10",
     borderColor: "border-blue-500/20",
     category: "Frontend",
@@ -55,7 +60,7 @@ const technologies: Technology[] = [
     icon: SiNextdotjs,
     name: "Next.js",
     description: "React framework",
-    color: "#FFFFFF",
+    colorKey: "nextjs",
     bgColor: "bg-zinc-500/10",
     borderColor: "border-zinc-500/20",
     category: "Frontend",
@@ -64,7 +69,7 @@ const technologies: Technology[] = [
     icon: SiTailwindcss,
     name: "Tailwind CSS",
     description: "CSS framework",
-    color: "#06B6D4",
+    colorKey: "tailwind",
     bgColor: "bg-cyan-500/10",
     borderColor: "border-cyan-500/20",
     category: "Frontend",
@@ -73,7 +78,7 @@ const technologies: Technology[] = [
     icon: FaNodeJs,
     name: "Node.js",
     description: "Backend runtime",
-    color: "#339933",
+    colorKey: "node",
     bgColor: "bg-green-500/10",
     borderColor: "border-green-500/20",
     category: "Backend",
@@ -82,7 +87,7 @@ const technologies: Technology[] = [
     icon: FaPython,
     name: "Python",
     description: "Programming language",
-    color: "#3776AB",
+    colorKey: "python",
     bgColor: "bg-blue-500/10",
     borderColor: "border-blue-500/20",
     category: "Backend",
@@ -91,7 +96,7 @@ const technologies: Technology[] = [
     icon: SiPostgresql,
     name: "PostgreSQL",
     description: "SQL database",
-    color: "#4169E1",
+    colorKey: "postgresql",
     bgColor: "bg-blue-500/10",
     borderColor: "border-blue-500/20",
     category: "Backend",
@@ -100,7 +105,7 @@ const technologies: Technology[] = [
     icon: FaGitAlt,
     name: "Git",
     description: "Version control",
-    color: "#F05032",
+    colorKey: "git",
     bgColor: "bg-orange-500/10",
     borderColor: "border-orange-500/20",
     category: "Tools",
@@ -109,7 +114,7 @@ const technologies: Technology[] = [
     icon: SiDocker,
     name: "Docker",
     description: "Containerization",
-    color: "#2496ED",
+    colorKey: "docker",
     bgColor: "bg-blue-500/10",
     borderColor: "border-blue-500/20",
     category: "DevOps",
@@ -118,7 +123,7 @@ const technologies: Technology[] = [
     icon: SiLinux,
     name: "Linux",
     description: "Operating system",
-    color: "#FCC624",
+    colorKey: "linux",
     bgColor: "bg-yellow-500/10",
     borderColor: "border-yellow-500/20",
     category: "DevOps",
@@ -127,7 +132,7 @@ const technologies: Technology[] = [
     icon: SiTraefikproxy,
     name: "Traefik",
     description: "Reverse proxy",
-    color: "#24A1C1",
+    colorKey: "traefik",
     bgColor: "bg-cyan-500/10",
     borderColor: "border-cyan-500/20",
     category: "DevOps",
@@ -136,7 +141,7 @@ const technologies: Technology[] = [
     icon: SiExpo,
     name: "Expo",
     description: "React Native platform",
-    color: "#FFFFFF",
+    colorKey: "expo",
     bgColor: "bg-zinc-500/10",
     borderColor: "border-zinc-500/20",
     category: "Deployment",
@@ -146,7 +151,7 @@ const technologies: Technology[] = [
 const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => setIsVisible(true), []);
-  
+
   const gridSize = isMobile ? "60px 60px" : "100px 100px";
   const minorGridSize = isMobile ? "15px 15px" : "25px 25px";
   const accentGridSize = isMobile ? "200px 200px" : "400px 400px";
@@ -201,37 +206,38 @@ const TechCard = ({
   isVisible: boolean;
   isMobile: boolean;
 }) => {
+  const {
+    color,
+    classes,
+    glowStyles,
+    accentLineStyles,
+    iconStyles,
+    cardClasses,
+  } = useCardGlow(tech.colorKey);
+
   return (
     <div
-      className={`group relative rounded-xl border border-zinc-800/60 bg-zinc-900/30 backdrop-blur-sm ${
-        isMobile ? "p-4" : "p-6"
-      } transition-all duration-700 ease-out ${
-        isMobile ? "hover:scale-[1.02]" : "hover:scale-[1.03]"
-      } hover:border-zinc-700/80 hover:bg-zinc-800/40 ${
+      className={`${cardClasses} ${isMobile ? "p-4" : "p-6"} ${
         isVisible
           ? "opacity-100 translate-y-0 scale-100"
           : "opacity-0 translate-y-8 scale-95"
       }`}
       style={{ transitionDelay: `${index * (isMobile ? 0.05 : 0.1)}s` }}
     >
-      <div
-        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl -z-10"
-        style={{
-          background: `radial-gradient(circle at center, ${tech.color}15 0%, transparent 70%)`,
-        }}
-      />
+      <div className={classes.glowElement} style={glowStyles} />
       <div className="flex items-start space-x-4">
         <div
-          className="flex h-12 w-12 items-center justify-center rounded-lg bg-zinc-900/80 border border-zinc-800/60 group-hover:border-zinc-700/80 transition-all duration-300 group-hover:scale-110"
+          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-zinc-900/80 border border-zinc-800/60 group-hover:border-zinc-700/80 transition-all duration-300 group-hover:scale-110`}
           style={{
-            boxShadow: `0 0 20px ${tech.color}20, 0 0 40px ${tech.color}10`,
+            boxShadow: "none",
+            filter: "none",
           }}
         >
           <tech.icon
             size={24}
             style={{
-              color: tech.color,
-              filter: `drop-shadow(0 0 8px ${tech.color}40)`,
+              color,
+              filter: "none",
             }}
           />
         </div>
@@ -250,9 +256,11 @@ const TechCard = ({
         </div>
       </div>
       <div
-        className="absolute bottom-0 left-4 right-4 h-px opacity-0 group-hover:opacity-100 transition-all duration-500"
+        className={classes.accentLine}
         style={{
-          background: `linear-gradient(to right, transparent, ${tech.color}60, transparent)`,
+          ...accentLineStyles,
+          left: isMobile ? "1rem" : "1.5rem",
+          right: isMobile ? "1rem" : "1.5rem",
         }}
       />
     </div>
@@ -341,15 +349,9 @@ export default function TechnologiesSection({
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <div className={`flex items-center ${isMobile ? "mb-4" : "mb-6"}`}>
-            <div className="h-px bg-gradient-to-r from-transparent via-zinc-500 to-transparent flex-1" />
-            <span
-              className={`px-6 text-xs text-zinc-500 uppercase tracking-[0.3em]`}
-            >
-              Technologies
-            </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-zinc-500 to-transparent flex-1" />
-          </div>
+          <SectionHeaderDivider className={isMobile ? "mb-4" : "mb-6"}>
+            Technologies
+          </SectionHeaderDivider>
           <h2
             className={`${
               isMobile
@@ -389,33 +391,13 @@ export default function TechnologiesSection({
         <div
           className={`${
             isMobile ? "mt-12" : "mt-20"
-          } flex justify-center transition-all duration-1000 ease-out ${
+          } transition-all duration-1000 ease-out ${
             cardsVisible
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-8"
           }`}
           style={{ transitionDelay: "1.2s" }}
-        >
-          <div className="flex items-center space-x-4">
-            <div
-              className={`h-px ${
-                isMobile ? "w-8" : "w-16"
-              } bg-gradient-to-r from-transparent to-zinc-500`}
-            />
-            <div className="w-2 h-2 rounded-full bg-zinc-500" />
-            <div
-              className={`h-px ${
-                isMobile ? "w-16" : "w-32"
-              } bg-gradient-to-r from-zinc-500 via-zinc-400 to-zinc-500`}
-            />
-            <div className="w-2 h-2 rounded-full bg-zinc-500" />
-            <div
-              className={`h-px ${
-                isMobile ? "w-8" : "w-16"
-              } bg-gradient-to-r from-zinc-500 to-transparent`}
-            />
-          </div>
-        </div>
+        ></div>
       </div>
       <div
         className={`absolute top-0 left-0 ${
