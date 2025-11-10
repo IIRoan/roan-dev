@@ -1,176 +1,169 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Briefcase, Calendar, GraduationCap, MapPin } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { TimelineItem } from "@/types/events";
-import { timelineData } from "@/data/events";
+import { WorkExperience } from "@/components/work-experience";
+import type { ExperienceItemType } from "@/components/work-experience";
+import { Fade } from "@/components/animate-ui/primitives/effects/fade";
+import GridBackground from "@/components/ui/GridBackground";
 
 interface EducationSectionProps {
   isMobile: boolean;
 }
 
+const WORK_EXPERIENCE: ExperienceItemType[] = [
+  {
+    id: "1",
+    companyName: "Test-Correct",
+    isCurrentEmployer: true,
+    positions: [
+      {
+        id: "1-1",
+        title: "Junior Development & Automation Specialist",
+        employmentPeriod: "2024 - Present",
+        employmentType: "Full-time",
+        description:
+          "Developing automation solutions and software applications.",
+        icon: "code",
+        skills: ["Software Development", "Automation"],
+        isExpanded: true,
+      },
+    ],
+  },
+  {
+    id: "2",
+    companyName: "De Pannekoek en De Kale (DPDK)",
+    positions: [
+      {
+        id: "2-1",
+        title: "DevOps Intern",
+        employmentPeriod: "2021 - 2022",
+        employmentType: "Internship",
+        description:
+          "Gained hands-on experience with DevOps practices and development.",
+        icon: "code",
+        skills: ["DevOps", "Development", "Internship"],
+      },
+    ],
+  },
+  {
+    id: "3",
+    companyName: "Albert Heijn",
+    positions: [
+      {
+        id: "3-1",
+        title: "Part-time Employee",
+        employmentPeriod: "2018 - 2024",
+        employmentType: "Part-time",
+        description:
+          "Retail operations and customer service.",
+        icon: "business",
+      },
+    ],
+  },
+];
+
+const EDUCATION_EXPERIENCE: ExperienceItemType[] = [
+  {
+    id: "4",
+    companyName: "Rotterdam University of Applied Sciences",
+    isCurrentEmployer: true,
+    positions: [
+      {
+        id: "4-1",
+        title: "Software Development",
+        employmentPeriod: "2023 - Present",
+        employmentType: "Full-time",
+        description:
+          "Studying modern software development and technologies.",
+        icon: "education",
+        skills: ["Software Engineering", "Web Development"],
+        isExpanded: true,
+      },
+    ],
+  },
+  {
+    id: "5",
+    companyName: "Grafisch Lyceum Rotterdam",
+    positions: [
+      {
+        id: "5-1",
+        title: "Network & Media Management - IT",
+        employmentPeriod: "2018 - 2022",
+        employmentType: "Full-time",
+        description:
+          "Specialized in network management and digital media technologies.",
+        icon: "education",
+        skills: ["Network Management", "Media Technologies", "IT"],
+      },
+    ],
+  },
+  {
+    id: "6",
+    companyName: "Melanchthon de Blesewic",
+    positions: [
+      {
+        id: "6-1",
+        title: "Mavo VMBO-TL",
+        employmentPeriod: "2014 - 2018",
+        employmentType: "Full-time",
+        description:
+          "Middleschool education.",
+        icon: "education",
+      },
+    ],
+  },
+];
+
 export default function EducationSection({ isMobile }: EducationSectionProps) {
   return (
-    <section className="relative min-h-screen w-full bg-zinc-950 px-4 md:px-8 py-16 md:py-24 overflow-hidden">
-      <div className="absolute inset-0 opacity-5">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(59, 130, 246, 0.3) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(59, 130, 246, 0.3) 1px, transparent 1px)
-            `,
-            backgroundSize: isMobile ? "50px 50px" : "80px 80px",
-          }}
-        />
-      </div>
+    <section id="education" className={`relative w-full bg-zinc-950 ${isMobile ? "px-4 py-16" : "px-8 py-20 md:px-16"}`}>
+      <GridBackground isMobile={isMobile} />
+      <div className="relative z-10 mx-auto max-w-6xl">
+        <Fade delay={0} className="transition-all duration-1000 ease-out">
+          <div className={`flex items-center ${isMobile ? "mb-4" : "mb-6"}`}>
+            <div className="h-px bg-gradient-to-r from-transparent via-zinc-500 to-transparent flex-1" />
+            <span
+              className={`${isMobile ? "px-4" : "px-6"} text-xs text-zinc-500 uppercase tracking-[0.3em]`}
+            >
+              Journey
+            </span>
+            <div className="h-px bg-gradient-to-r from-transparent via-zinc-500 to-transparent flex-1" />
+          </div>
+          
+          <div className="text-center mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-zinc-100">Education & Experience</h2>
+          </div>
+        </Fade>
 
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-500/8 to-cyan-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-bl from-purple-500/8 to-pink-500/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative z-10 mx-auto px-4 py-12 max-w-5xl">
-        <motion.h1
-          className="text-3xl md:text-4xl font-bold mb-2 text-center text-zinc-100"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          Education & Experience
-        </motion.h1>
-
-        <motion.p
-          className="text-zinc-400 text-center mb-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
+        <Fade delay={200} className="text-zinc-400 text-center mb-16 max-w-2xl mx-auto">
           My academic and professional development journey
-        </motion.p>
+        </Fade>
 
-        <div className="relative">
-          <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-blue-500/50 via-purple-500/50 to-transparent z-0" />
+        <div className="space-y-12">
+          <div>
+            <h3 className="text-2xl font-bold text-zinc-100 mb-6 flex items-center gap-3">
+              <div className="h-px flex-1 bg-zinc-800" />
+              <span className="text-sm uppercase tracking-wider text-zinc-500 font-medium">Work Experience</span>
+              <div className="h-px flex-1 bg-zinc-800" />
+            </h3>
+            <Fade delay={300}>
+              <div className="max-w-4xl mx-auto">
+                <WorkExperience experiences={WORK_EXPERIENCE} />
+              </div>
+            </Fade>
+          </div>
 
-          {timelineData.map((item, index) => {
-            const isEducation = item.type === "education";
-            const IconComponent = isEducation ? GraduationCap : Briefcase;
-
-            return (
-              <motion.div
-                key={index}
-                className={`mb-8 md:mb-12 relative z-10 flex flex-col ${
-                  index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-              >
-                <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full border-4 border-zinc-950 bg-gradient-to-br from-blue-500 to-purple-500 z-10">
-                  <div className="absolute inset-0 rounded-full animate-ping opacity-20 bg-blue-400" />
-                </div>
-
-                <div
-                  className={`md:w-1/2 flex ml-12 md:ml-0 ${
-                    index % 2 === 0
-                      ? "md:justify-end md:pr-8"
-                      : "md:justify-start md:pl-8"
-                  }`}
-                >
-                  <div className="mb-3 md:mb-0">
-                    <Badge
-                      variant="outline"
-                      className="text-xs md:text-sm py-1 px-2 md:px-3 bg-blue-500/10 border-blue-500/30 text-blue-400"
-                    >
-                      <Calendar className="w-3 h-3 md:w-4 md:h-4 mr-1" />
-                      {item.period}
-                    </Badge>
-                  </div>
-                </div>
-
-                <div className={`md:w-1/2 ml-12 md:ml-0 ${index % 2 === 0 ? "md:pl-8" : "md:pr-8"}`}>
-                  <motion.div
-                    className="w-full relative"
-                    initial={{ scale: 0.95 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    {item.current && (
-                      <div className="absolute -top-2 -right-2 z-20">
-                        <div
-                          className={`px-3 py-1 rounded-full text-xs font-medium text-white shadow-lg ${
-                            isEducation
-                              ? "bg-gradient-to-r from-blue-500 to-cyan-500"
-                              : "bg-gradient-to-r from-purple-500 to-pink-500"
-                          }`}
-                        >
-                          Current
-                        </div>
-                      </div>
-                    )}
-                    
-                    <Card className="overflow-hidden border-zinc-800/60 bg-zinc-900/90 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:border-zinc-700/60">
-                      <CardContent className="p-4 md:p-6">
-                        <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
-                          <div
-                            className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                              isEducation
-                                ? "bg-blue-500/20 border border-blue-500/30"
-                                : "bg-purple-500/20 border border-purple-500/30"
-                            }`}
-                          >
-                            <IconComponent
-                              className={`w-4 h-4 md:w-5 md:h-5 ${
-                                isEducation ? "text-blue-400" : "text-purple-400"
-                              }`}
-                            />
-                          </div>
-
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-lg md:text-xl font-bold text-zinc-100 mb-1 leading-tight">
-                              {item.title}
-                            </h3>
-                            <p className="text-zinc-300 font-medium mb-2 text-sm md:text-base">
-                              {item.organization}
-                            </p>
-                            {item.description && (
-                              <p className="text-zinc-400 text-xs md:text-sm leading-relaxed mb-3">
-                                {item.description}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs">
-                          <div className="flex items-center gap-2 md:gap-4">
-                            {item.location && (
-                              <div className="flex items-center gap-1 text-zinc-500">
-                                <MapPin className="w-3 h-3" />
-                                <span className="text-xs">{item.location}</span>
-                              </div>
-                            )}
-                          </div>
-
-                          <Badge
-                            className={`self-start sm:self-auto ${
-                              isEducation
-                                ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
-                                : "bg-purple-500/10 text-purple-400 border-purple-500/20"
-                            }`}
-                          >
-                            {isEducation ? "Education" : "Work"}
-                          </Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                </div>
-              </motion.div>
-            );
-          })}
+          <div>
+            <h3 className="text-2xl font-bold text-zinc-100 mb-6 flex items-center gap-3">
+              <div className="h-px flex-1 bg-zinc-800" />
+              <span className="text-sm uppercase tracking-wider text-zinc-500 font-medium">Education</span>
+              <div className="h-px flex-1 bg-zinc-800" />
+            </h3>
+            <Fade delay={400}>
+              <div className="max-w-4xl mx-auto">
+                <WorkExperience experiences={EDUCATION_EXPERIENCE} />
+              </div>
+            </Fade>
+          </div>
         </div>
       </div>
     </section>
