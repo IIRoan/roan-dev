@@ -27,6 +27,7 @@ export type ExperienceItem = {
   skills?: string[];
   location?: string;
   isCurrent?: boolean;
+  url?: string;
 };
 
 export default function ExperienceItem({ item }: { item: ExperienceItem }) {
@@ -88,7 +89,18 @@ export default function ExperienceItem({ item }: { item: ExperienceItem }) {
               <h3 className="text-lg font-semibold text-zinc-100 mb-1">
                 {item.title}
               </h3>
-              <p className="text-zinc-300">{item.company}</p>
+              {item.url ? (
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-300 hover:text-zinc-100 transition-colors duration-200 underline"
+                >
+                  {item.company}
+                </a>
+              ) : (
+                <p className="text-zinc-300">{item.company}</p>
+              )}
               <div className="flex items-center text-sm text-zinc-400 mt-2">
                 <CalendarIcon className="h-3.5 w-3.5 mr-2" />
                 <span>{item.period}</span>

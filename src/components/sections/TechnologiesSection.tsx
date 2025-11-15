@@ -35,6 +35,7 @@ interface Technology {
   bgColor: string;
   borderColor: string;
   category: string;
+  url: string;
 }
 
 const technologies: Technology[] = [
@@ -46,6 +47,7 @@ const technologies: Technology[] = [
     bgColor: "bg-cyan-500/10",
     borderColor: "border-cyan-500/20",
     category: "Frontend",
+    url: "https://react.dev",
   },
   {
     icon: SiTypescript,
@@ -55,6 +57,7 @@ const technologies: Technology[] = [
     bgColor: "bg-blue-500/10",
     borderColor: "border-blue-500/20",
     category: "Frontend",
+    url: "https://www.typescriptlang.org",
   },
   {
     icon: SiNextdotjs,
@@ -64,6 +67,7 @@ const technologies: Technology[] = [
     bgColor: "bg-zinc-500/10",
     borderColor: "border-zinc-500/20",
     category: "Frontend",
+    url: "https://nextjs.org",
   },
   {
     icon: SiTailwindcss,
@@ -73,6 +77,7 @@ const technologies: Technology[] = [
     bgColor: "bg-cyan-500/10",
     borderColor: "border-cyan-500/20",
     category: "Frontend",
+    url: "https://tailwindcss.com",
   },
   {
     icon: FaNodeJs,
@@ -82,6 +87,7 @@ const technologies: Technology[] = [
     bgColor: "bg-green-500/10",
     borderColor: "border-green-500/20",
     category: "Backend",
+    url: "https://nodejs.org",
   },
   {
     icon: FaPython,
@@ -91,6 +97,7 @@ const technologies: Technology[] = [
     bgColor: "bg-blue-500/10",
     borderColor: "border-blue-500/20",
     category: "Backend",
+    url: "https://www.python.org",
   },
   {
     icon: SiPostgresql,
@@ -100,6 +107,7 @@ const technologies: Technology[] = [
     bgColor: "bg-blue-500/10",
     borderColor: "border-blue-500/20",
     category: "Backend",
+    url: "https://www.postgresql.org",
   },
   {
     icon: FaGitAlt,
@@ -109,6 +117,7 @@ const technologies: Technology[] = [
     bgColor: "bg-orange-500/10",
     borderColor: "border-orange-500/20",
     category: "Tools",
+    url: "https://git-scm.com",
   },
   {
     icon: SiDocker,
@@ -118,6 +127,7 @@ const technologies: Technology[] = [
     bgColor: "bg-blue-500/10",
     borderColor: "border-blue-500/20",
     category: "DevOps",
+    url: "https://www.docker.com",
   },
   {
     icon: SiLinux,
@@ -127,6 +137,7 @@ const technologies: Technology[] = [
     bgColor: "bg-yellow-500/10",
     borderColor: "border-yellow-500/20",
     category: "DevOps",
+    url: "https://www.linux.org",
   },
   {
     icon: SiTraefikproxy,
@@ -136,6 +147,7 @@ const technologies: Technology[] = [
     bgColor: "bg-cyan-500/10",
     borderColor: "border-cyan-500/20",
     category: "DevOps",
+    url: "https://traefik.io",
   },
   {
     icon: SiExpo,
@@ -145,6 +157,7 @@ const technologies: Technology[] = [
     bgColor: "bg-zinc-500/10",
     borderColor: "border-zinc-500/20",
     category: "Deployment",
+    url: "https://expo.dev",
   },
 ];
 
@@ -216,54 +229,61 @@ const TechCard = ({
   } = useCardGlow(tech.colorKey);
 
   return (
-    <div
-      className={`${cardClasses} ${isMobile ? "p-4" : "p-6"} ${
+    <a
+      href={tech.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`block ${
         isVisible
           ? "opacity-100 translate-y-0 scale-100"
           : "opacity-0 translate-y-8 scale-95"
       }`}
       style={{ transitionDelay: `${index * (isMobile ? 0.05 : 0.1)}s` }}
     >
-      <div className={classes.glowElement} style={glowStyles} />
-      <div className="flex items-start space-x-4">
-        <div
-          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-zinc-900/80 border border-zinc-800/60 group-hover:border-zinc-700/80 transition-all duration-300 group-hover:scale-110`}
-          style={{
-            boxShadow: "none",
-            filter: "none",
-          }}
-        >
-          <tech.icon
-            size={24}
+      <div
+        className={`${cardClasses} ${isMobile ? "p-4" : "p-6"} h-full`}
+      >
+        <div className={classes.glowElement} style={glowStyles} />
+        <div className="flex items-start space-x-4">
+          <div
+            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-zinc-900/80 border border-zinc-800/60 group-hover:border-zinc-700/80 transition-all duration-300 group-hover:scale-110`}
             style={{
-              color,
+              boxShadow: "none",
               filter: "none",
             }}
-          />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-semibold text-zinc-100 text-lg group-hover:text-white transition-colors duration-300 truncate">
-              {tech.name}
-            </h3>
-            <span className="text-xs px-2 py-1 rounded-full bg-zinc-800/60 text-zinc-400 border border-zinc-700/50 ml-2">
-              {tech.category}
-            </span>
+          >
+            <tech.icon
+              size={24}
+              style={{
+                color,
+                filter: "none",
+              }}
+            />
           </div>
-          <p className="text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors duration-300">
-            {tech.description}
-          </p>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-semibold text-zinc-100 text-lg group-hover:text-white transition-colors duration-300 truncate">
+                {tech.name}
+              </h3>
+              <span className="text-xs px-2 py-1 rounded-full bg-zinc-800/60 text-zinc-400 border border-zinc-700/50 ml-2">
+                {tech.category}
+              </span>
+            </div>
+            <p className="text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors duration-300">
+              {tech.description}
+            </p>
+          </div>
         </div>
+        <div
+          className={classes.accentLine}
+          style={{
+            ...accentLineStyles,
+            left: isMobile ? "1rem" : "1.5rem",
+            right: isMobile ? "1rem" : "1.5rem",
+          }}
+        />
       </div>
-      <div
-        className={classes.accentLine}
-        style={{
-          ...accentLineStyles,
-          left: isMobile ? "1rem" : "1.5rem",
-          right: isMobile ? "1rem" : "1.5rem",
-        }}
-      />
-    </div>
+    </a>
   );
 };
 

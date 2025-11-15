@@ -29,6 +29,7 @@ const WORK_EXPERIENCE: ExperienceItem[] = [
     ],
     isCurrent: true,
     location: "Rotterdam, Netherlands",
+    url: "https://test-correct.nl",
   },
   {
     id: "2",
@@ -41,6 +42,7 @@ const WORK_EXPERIENCE: ExperienceItem[] = [
     icon: "code",
     skills: ["DevOps", "CI/CD", "Docker", "Jenkins", "Linux", "VPN"],
     location: "Rotterdam, Netherlands",
+    url: "https://www.dpdk.com",
   },
   {
     id: "3",
@@ -67,6 +69,7 @@ const EDUCATION_EXPERIENCE: ExperienceItem[] = [
     skills: ["React", "Web Development", "Agile", "Python", "TypeScript"],
     isCurrent: true,
     location: "Rotterdam, Netherlands",
+    url: "https://www.hogeschoolrotterdam.nl",
   },
   {
     id: "5",
@@ -84,6 +87,7 @@ const EDUCATION_EXPERIENCE: ExperienceItem[] = [
       "Windows Server",
     ],
     location: "Rotterdam, Netherlands",
+    url: "https://www.glr.nl",
   },
   {
     id: "6",
@@ -250,37 +254,16 @@ export default function EducationSection({ isMobile }: EducationSectionProps) {
           style={{ transitionDelay: "0.2s" }}
         >
           {/* Work Experience */}
-          <div
-            className={`transition-all duration-700 ease-out ${
-              sectionVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-8"
-            }`}
-            style={{ transitionDelay: "0.4s" }}
-          >
+          <div>
             <Fade delay={300}>
-              <TimelineSection
-                experiences={WORK_EXPERIENCE}
-                title="Work Experience"
-              />
+              <TimelineSection experiences={WORK_EXPERIENCE} />
             </Fade>
           </div>
 
           {/* Education */}
-          <div
-            className={`transition-all duration-700 ease-out ${
-              sectionVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-8"
-            }`}
-            style={{ transitionDelay: "0.6s" }}
-          >
+          <div>
             <Fade delay={400}>
-              <TimelineSection
-                experiences={EDUCATION_EXPERIENCE}
-                title="Education"
-                reverse
-              />
+              <TimelineSection experiences={EDUCATION_EXPERIENCE} reverse />
             </Fade>
           </div>
         </div>
