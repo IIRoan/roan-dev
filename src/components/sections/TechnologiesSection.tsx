@@ -233,7 +233,7 @@ const TechCard = ({
       href={tech.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`block ${
+      className={`block transition-all duration-700 ease-out ${
         isVisible
           ? "opacity-100 translate-y-0 scale-100"
           : "opacity-0 translate-y-8 scale-95"
