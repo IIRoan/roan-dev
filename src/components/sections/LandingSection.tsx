@@ -46,7 +46,14 @@ const mobileTechClusters = {
     position: { top: "8%", left: "6%" },
     icons: [
       { icon: "react", color: "#61DAFB", size: 28, x: 0, y: 0, delay: 0.2 },
-      { icon: "typescript", color: "#3178C6", size: 24, x: 45, y: 25, delay: 0.4 },
+      {
+        icon: "typescript",
+        color: "#3178C6",
+        size: 24,
+        x: 45,
+        y: 25,
+        delay: 0.4,
+      },
     ],
   },
   topRight: {
@@ -67,7 +74,14 @@ const mobileTechClusters = {
     position: { bottom: "15%", right: "8%" },
     icons: [
       { icon: "tailwind", color: "#06B6D4", size: 26, x: 0, y: 0, delay: 1.4 },
-      { icon: "postgresql", color: "#4169E1", size: 27, x: -35, y: 25, delay: 1.6 },
+      {
+        icon: "postgresql",
+        color: "#4169E1",
+        size: 27,
+        x: -35,
+        y: 25,
+        delay: 1.6,
+      },
     ],
   },
 };
@@ -77,9 +91,23 @@ const desktopTechClusters = {
     position: { top: "12%", left: "5%" },
     icons: [
       { icon: "react", color: "#61DAFB", size: 42, x: 0, y: 0, delay: 0.2 },
-      { icon: "typescript", color: "#3178C6", size: 36, x: 85, y: -15, delay: 0.4 },
+      {
+        icon: "typescript",
+        color: "#3178C6",
+        size: 36,
+        x: 85,
+        y: -15,
+        delay: 0.4,
+      },
       { icon: "nextjs", color: "#FFFFFF", size: 40, x: -25, y: 75, delay: 0.6 },
-      { icon: "tailwind", color: "#06B6D4", size: 38, x: 110, y: 60, delay: 0.8 },
+      {
+        icon: "tailwind",
+        color: "#06B6D4",
+        size: 38,
+        x: 110,
+        y: 60,
+        delay: 0.8,
+      },
     ],
   },
   backend: {
@@ -88,7 +116,14 @@ const desktopTechClusters = {
       { icon: "node", color: "#339933", size: 44, x: 0, y: 0, delay: 1.0 },
       { icon: "python", color: "#3776AB", size: 42, x: -75, y: 65, delay: 1.2 },
       { icon: "prisma", color: "#2D3748", size: 36, x: 85, y: 35, delay: 1.4 },
-      { icon: "postgresql", color: "#4169E1", size: 40, x: 15, y: 95, delay: 1.6 },
+      {
+        icon: "postgresql",
+        color: "#4169E1",
+        size: 40,
+        x: 15,
+        y: 95,
+        delay: 1.6,
+      },
     ],
   },
   tools: {
@@ -96,7 +131,14 @@ const desktopTechClusters = {
     icons: [
       { icon: "git", color: "#F05032", size: 36, x: 0, y: 0, delay: 1.8 },
       { icon: "linear", color: "#5E6AD2", size: 34, x: 75, y: -20, delay: 2.0 },
-      { icon: "cloudflare", color: "#F38020", size: 38, x: -35, y: 65, delay: 2.2 },
+      {
+        icon: "cloudflare",
+        color: "#F38020",
+        size: 38,
+        x: -35,
+        y: 65,
+        delay: 2.2,
+      },
     ],
   },
   devops: {
@@ -105,7 +147,14 @@ const desktopTechClusters = {
       { icon: "docker", color: "#2496ED", size: 40, x: 0, y: 0, delay: 2.4 },
       { icon: "linux", color: "#FCC624", size: 38, x: 80, y: -25, delay: 2.6 },
       { icon: "podman", color: "#892CA0", size: 36, x: -30, y: 70, delay: 2.8 },
-      { icon: "traefik", color: "#24A1C1", size: 34, x: 110, y: 50, delay: 3.0 },
+      {
+        icon: "traefik",
+        color: "#24A1C1",
+        size: 34,
+        x: 110,
+        y: 50,
+        delay: 3.0,
+      },
     ],
   },
   deployment: {
@@ -127,7 +176,11 @@ const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
 
   if (isMobile) {
     return (
-      <div className={`absolute inset-0 transition-opacity duration-1000 ${isVisible ? "opacity-8" : "opacity-0"}`}>
+      <div
+        className={`absolute inset-0 transition-opacity duration-1000 ${
+          isVisible ? "opacity-8" : "opacity-0"
+        }`}
+      >
         <div
           className="absolute inset-0"
           style={{
@@ -143,7 +196,11 @@ const GridBackground = ({ isMobile }: { isMobile: boolean }) => {
   }
 
   return (
-    <div className={`absolute inset-0 transition-opacity duration-2000 ${isVisible ? "opacity-15" : "opacity-0"}`}>
+    <div
+      className={`absolute inset-0 transition-opacity duration-2000 ${
+        isVisible ? "opacity-15" : "opacity-0"
+      }`}
+    >
       <div
         className="absolute inset-0"
         style={{
@@ -208,7 +265,11 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
     return () => clearInterval(floatingInterval);
   }, [isMobile]);
 
-  const calculatePosition = (position: any, windowWidth: number, windowHeight: number) => {
+  const calculatePosition = (
+    position: any,
+    windowWidth: number,
+    windowHeight: number
+  ) => {
     let left = 0;
     let top = 0;
 
@@ -225,7 +286,8 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
     } else if (position.bottom) {
       const bottomPercentage = parseFloat(position.bottom);
       const clusterHeight = isMobile ? 80 : 150;
-      top = windowHeight - (bottomPercentage / 100) * windowHeight - clusterHeight;
+      top =
+        windowHeight - (bottomPercentage / 100) * windowHeight - clusterHeight;
     }
 
     return { left, top };
@@ -238,7 +300,11 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
       {Object.entries(clusters).map(([clusterName, cluster]) => {
-        const clusterPosition = calculatePosition(cluster.position, windowSize.width, windowSize.height);
+        const clusterPosition = calculatePosition(
+          cluster.position,
+          windowSize.width,
+          windowSize.height
+        );
 
         return (
           <div
@@ -258,9 +324,12 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
             />
 
             {cluster.icons.map((iconData, index) => {
-              const IconComponent = iconComponents[iconData.icon as keyof typeof iconComponents];
+              const IconComponent =
+                iconComponents[iconData.icon as keyof typeof iconComponents];
               const floatX = isMobile ? Math.sin(floatOffset + index) * 2 : 0;
-              const floatY = isMobile ? Math.cos(floatOffset + index * 0.7) * 1.5 : 0;
+              const floatY = isMobile
+                ? Math.cos(floatOffset + index * 0.7) * 1.5
+                : 0;
 
               return (
                 <div
@@ -286,10 +355,14 @@ const ClusteredTechIcons = ({ isMobile }: { isMobile: boolean }) => {
                         ? "bg-zinc-900/20 border border-zinc-800/30"
                         : "bg-zinc-900/30 border border-zinc-800/40"
                     } transition-all duration-300 ${
-                      !isMobile ? "group-hover:border-zinc-700/80 group-hover:bg-zinc-800/60" : ""
+                      !isMobile
+                        ? "group-hover:border-zinc-700/80 group-hover:bg-zinc-800/60"
+                        : ""
                     }`}
                     style={{
-                      boxShadow: isMobile ? `0 0 8px ${iconData.color}08` : `0 0 15px ${iconData.color}15`,
+                      boxShadow: isMobile
+                        ? `0 0 8px ${iconData.color}08`
+                        : `0 0 15px ${iconData.color}15`,
                     }}
                   >
                     <IconComponent
@@ -338,7 +411,10 @@ const FloatingGeometry = ({ isMobile }: { isMobile: boolean }) => {
       opacity: Math.random() * 0.08 + 0.03,
       rotation: Math.random() * 360,
       rotationSpeed: (Math.random() - 0.5) * 0.2,
-      type: ["circle", "square", "triangle"][Math.floor(Math.random() * 3)] as "circle" | "square" | "triangle",
+      type: ["circle", "square", "triangle"][Math.floor(Math.random() * 3)] as
+        | "circle"
+        | "square"
+        | "triangle",
       floatOffset: Math.random() * Math.PI * 2,
     }));
     setShapes(initialShapes);
@@ -463,7 +539,9 @@ const AnimatedParticles = ({ isMobile }: { isMobile: boolean }) => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {particles.map((particle) => {
-        const opacity = Math.sin((particle.life / particle.maxLife) * Math.PI) * (isMobile ? 0.2 : 0.4);
+        const opacity =
+          Math.sin((particle.life / particle.maxLife) * Math.PI) *
+          (isMobile ? 0.2 : 0.4);
         return (
           <div
             key={particle.id}
@@ -512,7 +590,10 @@ const TypewriterText = ({ isMobile }: { isMobile: boolean }) => {
           isMobile ? 1500 : 2000
         );
         return () => clearTimeout(pauseTimer);
-      } else if (currentIndex > firstPart.length && currentIndex < fullText.length) {
+      } else if (
+        currentIndex > firstPart.length &&
+        currentIndex < fullText.length
+      ) {
         const timer = setTimeout(() => {
           setDisplayedText(fullText.slice(0, currentIndex + 1));
           setCurrentIndex(currentIndex + 1);
@@ -532,10 +613,18 @@ const TypewriterText = ({ isMobile }: { isMobile: boolean }) => {
   }, []);
 
   return (
-    <h1 className={`${isMobile ? "text-2xl sm:text-3xl" : "text-4xl md:text-6xl lg:text-7xl"} font-light tracking-tight mb-6`}>
+    <h1
+      className={`${
+        isMobile ? "text-4xl sm:text-4xl" : "text-4xl md:text-6xl lg:text-7xl"
+      } font-light tracking-tight mb-6`}
+    >
       <span className="text-zinc-100">
         {displayedText}
-        <span className={`${showCursor ? "opacity-100" : "opacity-0"} transition-opacity duration-100 text-zinc-100`}>
+        <span
+          className={`${
+            showCursor ? "opacity-100" : "opacity-0"
+          } transition-opacity duration-100 text-zinc-100`}
+        >
           |
         </span>
       </span>
@@ -543,14 +632,21 @@ const TypewriterText = ({ isMobile }: { isMobile: boolean }) => {
   );
 };
 
-export default function LandingSection({ onViewProjects }: { onViewProjects?: () => void }) {
+export default function LandingSection({
+  onViewProjects,
+}: {
+  onViewProjects?: () => void;
+}) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(
-        window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        window.innerWidth < 768 ||
+          /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          )
       );
     };
 
@@ -562,7 +658,7 @@ export default function LandingSection({ onViewProjects }: { onViewProjects?: ()
   }, []);
 
   return (
-    <section className="relative h-screen w-full snap-start overflow-hidden bg-zinc-950">
+    <section className="relative w-full min-h-[100dvh] snap-start overflow-hidden bg-zinc-950">
       <div
         className={`absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900/95 to-zinc-950 transition-opacity duration-1000 ${
           isLoaded ? "opacity-100" : "opacity-0"
@@ -575,7 +671,9 @@ export default function LandingSection({ onViewProjects }: { onViewProjects?: ()
       <AnimatedParticles isMobile={isMobile} />
 
       <div
-        className={`absolute inset-0 transition-all duration-2000 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+        className={`absolute inset-0 transition-all duration-2000 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
       >
         <div
           className={`absolute top-1/3 left-1/3 ${
@@ -589,13 +687,19 @@ export default function LandingSection({ onViewProjects }: { onViewProjects?: ()
         />
       </div>
 
-      <div className="relative z-40 flex h-full items-center justify-center">
-        <div className={`text-center ${isMobile ? "px-6" : "px-8"}`}>
+      <div className="relative z-40 flex min-h-[100dvh] w-full items-center justify-center px-4 sm:px-8">
+        <div
+          className={`mx-auto flex w-full max-w-3xl flex-col items-center text-center ${
+            isMobile ? "px-6" : "px-8"
+          }`}
+        >
           <div
             className={`${
               isMobile ? "mb-6" : "mb-10"
-            } flex justify-center transition-all duration-1000 ease-out ${
-              isLoaded ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-75 translate-y-8"
+            } flex w-full items-center justify-center transition-all duration-1000 ease-out ${
+              isLoaded
+                ? "opacity-100 scale-100 translate-y-0"
+                : "opacity-0 scale-75 translate-y-8"
             }`}
           >
             <div className="relative group">
@@ -607,10 +711,12 @@ export default function LandingSection({ onViewProjects }: { onViewProjects?: ()
               <Image
                 src="/logo.png"
                 alt="Roan Logo"
-                width={isMobile ? 50 : 80}
-                height={isMobile ? 50 : 80}
+                width={isMobile ? 80 : 100}
+                height={isMobile ? 80 : 100}
                 className={`relative z-10 opacity-95 drop-shadow-2xl transition-all duration-500 ${
-                  !isMobile ? "group-hover:scale-110 group-hover:drop-shadow-[0_0_30px_rgba(59,130,246,0.3)]" : ""
+                  !isMobile
+                    ? "group-hover:scale-110 group-hover:drop-shadow-[0_0_30px_rgba(59,130,246,0.3)]"
+                    : ""
                 }`}
                 priority
               />
@@ -621,8 +727,10 @@ export default function LandingSection({ onViewProjects }: { onViewProjects?: ()
 
           <p
             className={`${
-              isMobile ? "text-sm px-2 mb-6" : "text-lg md:text-xl mb-10"
-            } text-zinc-400 max-w-xl mx-auto leading-relaxed transition-all duration-700 ease-out ${
+              isMobile
+                ? "text-base px-3 mb-6 text-zinc-300 max-w-2xl"
+                : "text-lg md:text-xl mb-10 text-zinc-300 max-w-xl"
+            } mx-auto leading-relaxed transition-all duration-700 ease-out ${
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: "1.5s" }}
@@ -653,7 +761,9 @@ export default function LandingSection({ onViewProjects }: { onViewProjects?: ()
               className={`${
                 isMobile ? "w-full max-w-xs px-6 py-3 text-sm" : "px-6 py-3"
               } border border-zinc-600 hover:border-zinc-500 text-zinc-300 hover:text-zinc-200 rounded-md transition-all duration-300 ${
-                !isMobile ? "hover:scale-105 hover:bg-zinc-800/50" : "hover:bg-zinc-800/30"
+                !isMobile
+                  ? "hover:scale-105 hover:bg-zinc-800/50"
+                  : "hover:bg-zinc-800/30"
               } cursor-pointer`}
             >
               Contact Me
@@ -663,14 +773,22 @@ export default function LandingSection({ onViewProjects }: { onViewProjects?: ()
       </div>
 
       <div
-        className={`absolute top-0 left-0 ${isMobile ? "w-48 h-48" : "w-64 h-64"} bg-gradient-to-br from-blue-500/${
+        className={`absolute top-0 left-0 ${
+          isMobile ? "w-48 h-48" : "w-64 h-64"
+        } bg-gradient-to-br from-blue-500/${
           isMobile ? "8" : "15"
-        } to-transparent blur-3xl transition-all duration-2000 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+        } to-transparent blur-3xl transition-all duration-2000 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
       />
       <div
-        className={`absolute bottom-0 right-0 ${isMobile ? "w-48 h-48" : "w-64 h-64"} bg-gradient-to-tl from-purple-500/${
+        className={`absolute bottom-0 right-0 ${
+          isMobile ? "w-48 h-48" : "w-64 h-64"
+        } bg-gradient-to-tl from-purple-500/${
           isMobile ? "8" : "15"
-        } to-transparent blur-3xl transition-all duration-2000 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+        } to-transparent blur-3xl transition-all duration-2000 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
       />
     </section>
   );

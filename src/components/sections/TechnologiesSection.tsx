@@ -392,10 +392,10 @@ export default function TechnologiesSection({
           </p>
         </div>
         <div
-          className={`grid gap-${isMobile ? "6" : "8"} ${
+          className={`grid ${
             isMobile
-              ? "grid-cols-1 sm:grid-cols-2"
-              : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+              ? "gap-6 grid-cols-1 sm:grid-cols-2"
+              : "gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           }`}
         >
           {technologies.map((tech, idx) => (

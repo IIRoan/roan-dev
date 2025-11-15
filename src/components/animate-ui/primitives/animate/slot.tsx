@@ -64,22 +64,28 @@ function Slot<T extends HTMLElement = HTMLElement>({
   ref,
   ...props
 }: SlotProps<T>) {
-  if (!React.isValidElement(children)) return null;
+  const childElement = React.isValidElement(children) ? children : null;
+  const childType = childElement?.type as React.ElementType | undefined;
 
   const isAlreadyMotion =
-    typeof children.type === 'object' &&
-    children.type !== null &&
-    isMotionComponent(children.type);
+    !!childElement &&
+    typeof childType === 'object' &&
+    childType !== null &&
+    isMotionComponent(childType);
 
-  const Base = React.useMemo(
-    () =>
-      isAlreadyMotion
-        ? (children.type as React.ElementType)
-        : motion.create(children.type as React.ElementType),
-    [isAlreadyMotion, children.type],
-  );
+  const Base = React.useMemo(() => {
+    if (!childType) {
+      return motion.div;
+    }
 
-  const { ref: childRef, ...childProps } = children.props as AnyProps;
+    return isAlreadyMotion
+      ? (childType as React.ElementType)
+      : motion.create(childType as React.ElementType);
+  }, [childType, isAlreadyMotion]);
+
+  if (!childElement) return null;
+
+  const { ref: childRef, ...childProps } = childElement.props as AnyProps;
 
   const mergedProps = mergeProps(childProps, props);
 

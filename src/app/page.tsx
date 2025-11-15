@@ -16,8 +16,6 @@ export default function Home() {
 
   const SECTIONS_COUNT = 4;
   const SCROLL_COOLDOWN = 800;
-  const SWIPE_THRESHOLD = 80;
-  const SWIPE_TIME_LIMIT = 600;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -25,8 +23,19 @@ export default function Home() {
       container.style.transform = `translateY(0%)`;
       setCurrentSection(0);
     }
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    container.style.transition = "";
+    container.style.transform = `translateY(0vh)`;
+    setCurrentSection(0);
+  }, [isMobile]);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -39,6 +48,8 @@ export default function Home() {
   }, []);
 
   const transitionToSection = useCallback((targetIndex: number) => {
+    if (isMobile) return;
+
     const container = containerRef.current;
     if (!container || isTransitioning) return;
 
@@ -62,11 +73,24 @@ export default function Home() {
     };
 
     setTimeout(cleanup, 800);
-  }, [currentSection, isTransitioning]);
+  }, [SECTIONS_COUNT, currentSection, isMobile, isTransitioning]);
+
+  const scrollToSection = useCallback((index: number) => {
+    const clampedIndex = Math.max(0, Math.min(index, SECTIONS_COUNT - 1));
+    const section = sectionRefs.current[clampedIndex];
+    if (!section) return;
+
+    section.scrollIntoView({ behavior: "smooth", block: "start" });
+    setCurrentSection(clampedIndex);
+  }, [SECTIONS_COUNT]);
 
   const goToSection = useCallback((index: number) => {
+    if (isMobile) {
+      scrollToSection(index);
+      return;
+    }
     transitionToSection(index);
-  }, [transitionToSection]);
+  }, [isMobile, scrollToSection, transitionToSection]);
 
   const getSectionElement = (index: number) => {
     return sectionRefs.current[index];
@@ -120,43 +144,6 @@ export default function Home() {
   }, [currentSection, isTransitioning, isMobile, transitionToSection, canTransitionFromSection]);
 
   useEffect(() => {
-    if (!isMobile) return;
-
-    let touchStartY = 0;
-    let touchStartTime = 0;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-      touchStartTime = Date.now();
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (isTransitioning) return;
-
-      const touchEndY = e.changedTouches[0].clientY;
-      const touchTime = Date.now() - touchStartTime;
-      const deltaY = touchStartY - touchEndY;
-      
-      if (Math.abs(deltaY) > SWIPE_THRESHOLD && touchTime < SWIPE_TIME_LIMIT) {
-        const direction = deltaY > 0 ? 1 : -1;
-        
-        if (canTransitionFromSection(direction)) {
-          const targetSection = currentSection + direction;
-          transitionToSection(targetSection);
-        }
-      }
-    };
-
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
-
-    return () => {
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [currentSection, isTransitioning, isMobile, transitionToSection, canTransitionFromSection]);
-
-  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isTransitioning) return;
 
@@ -200,7 +187,9 @@ export default function Home() {
 
   return (
     <>
-      <div className="fixed right-4 md:right-8 top-1/2 transform -translate-y-1/2 z-50 flex flex-col space-y-4">
+      <div
+        className={`${isMobile ? "hidden" : "fixed"} right-4 md:right-8 top-1/2 transform -translate-y-1/2 z-50 flex flex-col space-y-4`}
+      >
         {Array.from({ length: SECTIONS_COUNT }).map((_, index) => (
           <button
             key={index}
@@ -216,39 +205,47 @@ export default function Home() {
         ))}
       </div>
 
-      <div className="h-screen overflow-hidden">
+      <div className={isMobile ? "min-h-screen overflow-visible" : "h-screen overflow-hidden"}>
         <div
           ref={containerRef}
-          className="h-full"
-          style={{ 
-            transform: `translateY(0vh)`,
-            transition: isTransitioning ? 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none'
-          }}
+          className={isMobile ? "" : "h-full"}
         >
           <div 
             ref={assignSectionRef(0)}
-            className="h-screen overflow-hidden section-fade"
+            className={`${isMobile ? "min-h-screen overflow-y-visible" : "h-screen overflow-hidden"} overflow-x-hidden section-fade`}
           >
             <LandingSection onViewProjects={() => goToSection(3)} />
           </div>
 
           <div 
             ref={assignSectionRef(1)}
-            className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
+            className={`${
+              isMobile
+                ? "min-h-screen overflow-y-visible"
+                : "h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900"
+            } overflow-x-hidden section-fade`}
           >
             <TechnologiesSection isMobile={isMobile} />
           </div>
 
           <div 
             ref={assignSectionRef(2)}
-            className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
+            className={`${
+              isMobile
+                ? "min-h-screen overflow-y-visible"
+                : "h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900"
+            } overflow-x-hidden section-fade`}
           >
             <EducationSection isMobile={isMobile} />
           </div>
 
           <div 
             ref={assignSectionRef(3)}
-            className="h-screen overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 section-fade"
+            className={`${
+              isMobile
+                ? "min-h-screen overflow-y-visible"
+                : "h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900"
+            } overflow-x-hidden section-fade`}
           >
             <ProjectsSection isMobile={isMobile} />
           </div>
