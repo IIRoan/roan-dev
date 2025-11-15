@@ -28,7 +28,7 @@ const socialLinks = [
   },
   {
     icon: FaEnvelope,
-    href: "mailto:hello@roan.dev",
+    href: "mailto:hey@roan.dev",
     label: "Email",
     color: "hover:text-green-400",
   },
