@@ -3,6 +3,15 @@
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import Image from "next/image";
 import { Divider } from "@/components/ui/divider";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipPortal,
+  TooltipPositioner,
+  TooltipPopup,
+  TooltipArrow,
+} from "@/components/ui/tooltip";
+import { usePing } from "@/hooks/usePing";
 
 const socialLinks = [
   {
@@ -27,6 +36,7 @@ const socialLinks = [
 
 export default function FooterSection() {
   const currentYear = new Date().getFullYear();
+  const ping = usePing();
 
   return (
     <footer className="relative w-full bg-zinc-950">
@@ -96,10 +106,31 @@ export default function FooterSection() {
               © {currentYear} Roan.dev. All rights reserved.
             </div>
             <div className="flex justify-center items-center space-x-3">
-              <div className="relative">
-                <div className="w-2 h-2 bg-green-500 rounded-full" />
-                <div className="absolute inset-0 w-2 h-2 bg-green-400 rounded-full animate-ping" />
-              </div>
+              <Tooltip>
+                <TooltipTrigger className="flex items-center justify-center cursor-help">
+                  <div className="relative">
+                    <div className="w-2 h-2 bg-green-500 rounded-full" />
+                    <div className="absolute inset-0 w-2 h-2 bg-green-400 rounded-full animate-ping" />
+                  </div>
+                </TooltipTrigger>
+                <TooltipPortal>
+                  <TooltipPositioner side="top">
+                    <TooltipPopup className="bg-zinc-900 text-white border border-zinc-700">
+                      <div className="flex flex-col items-center ">
+                        {ping !== null && (
+                          <div className="flex items-baseline">
+                            <span className=" font-semibold text-green-400">
+                              {ping}
+                            </span>
+                            <span className="text-xs text-zinc-400">ms</span>
+                          </div>
+                        )}
+                      </div>
+                      <TooltipArrow />
+                    </TooltipPopup>
+                  </TooltipPositioner>
+                </TooltipPortal>
+              </Tooltip>
               <span className="text-xs text-green-400 uppercase tracking-wider font-medium">
                 Systems Online
               </span>
